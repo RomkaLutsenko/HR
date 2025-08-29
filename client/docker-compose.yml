@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: p2io1asn3vy4eq5ix
+      POSTGRES_DB: telegramhrbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/client/data
