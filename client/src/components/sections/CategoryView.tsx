@@ -158,7 +158,7 @@ export default function CategoryView() {
                     <button
                       className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
                       onClick={() => handleAddToCart(service, specialist)}
-                      disabled={selectedSpecialist && !specialist?.isAvailable}
+                      disabled={Boolean(selectedSpecialist && !specialist?.isAvailable)}
                     >
                       {selectedSpecialist && !specialist?.isAvailable ? 'Специалист занят' : 'Заказать услугу'}
                     </button>
@@ -174,7 +174,7 @@ export default function CategoryView() {
                       <button
                         className="text-xl text-blue-600 bg-gray-100 hover:bg-gray-200 w-8 h-8 rounded-full transition-colors"
                         onClick={() => handleAddToCart(service, specialist)}
-                        disabled={selectedSpecialist && !specialist?.isAvailable}
+                        disabled={Boolean(selectedSpecialist && !specialist?.isAvailable)}
                       >
                         +
                       </button>
