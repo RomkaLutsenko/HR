@@ -16,7 +16,7 @@ export default function ModeratorSpecialists() {
   const fetchSpecialists = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/moderator/specialists');
+      const response = await api.getModeratorSpecialists();
       if (response.success) {
         setSpecialists(response.specialists);
       }
@@ -30,10 +30,7 @@ export default function ModeratorSpecialists() {
   const handleSpecialistAction = async (specialistId: number, action: 'ACTIVATE' | 'DEACTIVATE' | 'DELETE') => {
     try {
       setIsProcessing(specialistId);
-      const response = await api.post('/moderator/specialists', {
-        specialistId,
-        action
-      });
+      const response = await api.manageSpecialist(specialistId, action);
 
       if (response.success) {
         await fetchSpecialists();

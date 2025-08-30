@@ -8,9 +8,9 @@
     "start": "next start -p 3000",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
-    "db:generate": "prisma generate --schema=../shared/prisma/schema.prisma",
-    "db:push": "prisma db push --schema=../shared/prisma/schema.prisma",
-    "db:migrate": "prisma migrate dev --schema=../shared/prisma/schema.prisma"
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",

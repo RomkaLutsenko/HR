@@ -188,4 +188,37 @@ export const api = {
     const data: OrderStatusesResponse = await response.json();
     return data.orderStatuses;
   },
+
+  // Модератор API
+  async getModeratorApplications(): Promise<any> {
+    const response = await fetch(`${API_BASE}/moderator/applications`);
+    return response.json();
+  },
+
+  async processApplication(applicationId: number, action: 'APPROVE' | 'REJECT', comment?: string): Promise<any> {
+    const response = await fetch(`${API_BASE}/moderator/applications`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ applicationId, action, comment }),
+    });
+    return response.json();
+  },
+
+  async getModeratorSpecialists(): Promise<any> {
+    const response = await fetch(`${API_BASE}/moderator/specialists`);
+    return response.json();
+  },
+
+  async manageSpecialist(specialistId: number, action: 'ACTIVATE' | 'DEACTIVATE' | 'DELETE'): Promise<any> {
+    const response = await fetch(`${API_BASE}/moderator/specialists`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ specialistId, action }),
+    });
+    return response.json();
+  },
 };

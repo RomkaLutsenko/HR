@@ -61,6 +61,7 @@ export interface Specialist {
   hourlyRate: number;
   isAvailable: boolean;
   services?: Service[];
+  orders?: Order[];
   createdAt?: string;
   updatedAt?: string;
 }
