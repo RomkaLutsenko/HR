@@ -8,7 +8,7 @@ interface ModeratorLayoutProps {
 }
 
 export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
-  const { user, status, logout, isLoggingOut } = useAuth();
+  const { user, status } = useAuth();
 
   useEffect(() => {
     if (status !== 'loading') {
@@ -57,12 +57,11 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
                 {user.firstName} {user.lastName}
               </span>
               <button
-                onClick={logout}
-                disabled={isLoggingOut}
-                className="text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => window.location.href = '/'}
+                className="text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200"
                 title="Выйти из системы"
               >
-                {isLoggingOut ? 'Выход...' : 'Выйти'}
+                Выйти
               </button>
             </div>
           </div>
