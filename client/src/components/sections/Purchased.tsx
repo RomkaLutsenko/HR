@@ -162,9 +162,6 @@ export default function Purchased() {
                 {item.specialist && (
                   <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-3 mb-3 border border-primary-100">
                     <div className="flex items-center space-x-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white text-xs font-semibold">{item.specialist.name.charAt(0)}</span>
-                      </div>
                       <span className="text-sm font-semibold text-primary-800">
                         {item.specialist.name} • {item.specialist.hourlyRate} ₽/час
                       </span>

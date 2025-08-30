@@ -86,13 +86,13 @@ export default function MainMenu() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-xl">{service.image}</span>
-                </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-neutral-800 text-lg mb-1 group-hover:text-primary-600 transition-colors">
-                    {service.name}
-                  </h3>
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-xl">{service.image}</span>
+                    <h3 className="font-semibold text-neutral-800 text-lg mb-1 group-hover:text-primary-600 transition-colors">
+                      {service.name}
+                    </h3>
+                  </div>
                   <p className="text-sm text-neutral-600 mb-2 line-clamp-2">
                     {service.description}
                   </p>
