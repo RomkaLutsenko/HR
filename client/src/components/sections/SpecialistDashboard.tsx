@@ -141,116 +141,140 @@ export default function SpecialistDashboard() {
     }
   };
 
+  const vibrate = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+          <p className="mt-4 text-neutral-600">Загрузка...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
-
+    <div className="space-y-6 pt-6 pb-24">
       {/* Табы */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="flex">
-          <button
-            onClick={() => setActiveTab('profile')}
-            className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
-              activeTab === 'profile'
-                ? 'text-primary-600 border-b-2 border-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            Профиль
-          </button>
-          <button
-            onClick={() => setActiveTab('applications')}
-            className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
-              activeTab === 'applications'
-                ? 'text-primary-600 border-b-2 border-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            Заявки
-          </button>
-          <button
-            onClick={() => setActiveTab('services')}
-            className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
-              activeTab === 'services'
-                ? 'text-primary-600 border-b-2 border-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            Услуги
-          </button>
+      <div className="px-6">
+        <div className="glass rounded-2xl border border-white/20 shadow-soft">
+          <div className="flex">
+            <button
+              onClick={() => {
+                setActiveTab('profile');
+                vibrate();
+              }}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 rounded-l-2xl ${
+                activeTab === 'profile'
+                  ? 'text-primary-600 bg-white/80 shadow-medium'
+                  : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
+              }`}
+            >
+              Профиль
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('applications');
+                vibrate();
+              }}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+                activeTab === 'applications'
+                  ? 'text-primary-600 bg-white/80 shadow-medium'
+                  : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
+              }`}
+            >
+              Заявки
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('services');
+                vibrate();
+              }}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 rounded-r-2xl ${
+                activeTab === 'services'
+                  ? 'text-primary-600 bg-white/80 shadow-medium'
+                  : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
+              }`}
+            >
+              Услуги
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Контент */}
-      <div className="p-4 pt-6 pb-24">
+      <div className="px-6 space-y-6">
         {activeTab === 'profile' && (
           <div className="space-y-6">
             {/* Основная информация */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Основная информация</h3>
+            <div className="glass rounded-2xl p-6 border border-white/20 shadow-soft">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-sm">👤</span>
+                </div>
+                <h3 className="text-xl font-bold text-neutral-800">Основная информация</h3>
+              </div>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Имя и фамилия
                   </label>
                   <input
                     type="text"
                     value={profile.name}
                     onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="Введите ваше имя"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Опыт работы
                   </label>
                   <input
                     type="text"
                     value={profile.experience}
                     onChange={(e) => setProfile({ ...profile, experience: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="Например: 5 лет в сфере IT"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Описание
                   </label>
                   <textarea
                     value={profile.description}
                     onChange={(e) => setProfile({ ...profile, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="Расскажите о себе и ваших навыках"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Почасовая ставка (₽)
                   </label>
                   <input
                     type="number"
                     value={profile.hourlyRate}
                     onChange={(e) => setProfile({ ...profile, hourlyRate: Number(e.target.value) })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="1000"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Категории услуг
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -272,9 +296,9 @@ export default function SpecialistDashboard() {
                               });
                             }
                           }}
-                          className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                          className="rounded border-white/20 text-primary-600 focus:ring-primary-500 bg-white/50"
                         />
-                        <span className="text-sm text-gray-700">{category.name}</span>
+                        <span className="text-sm text-neutral-700">{category.name}</span>
                       </label>
                     ))}
                   </div>
@@ -285,15 +309,18 @@ export default function SpecialistDashboard() {
                     type="checkbox"
                     checked={profile.isAvailable}
                     onChange={(e) => setProfile({ ...profile, isAvailable: e.target.checked })}
-                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    className="rounded border-white/20 text-primary-600 focus:ring-primary-500 bg-white/50"
                   />
-                  <span className="text-sm text-gray-700">Доступен для заказов</span>
+                  <span className="text-sm text-neutral-700">Доступен для заказов</span>
                 </div>
               </div>
 
               <button
-                onClick={handleProfileSave}
-                className="w-full mt-6 bg-gradient-to-r from-primary-500 to-secondary-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-primary-600 hover:to-secondary-700 transition-all duration-300"
+                onClick={() => {
+                  handleProfileSave();
+                  vibrate();
+                }}
+                className="w-full mt-6 bg-gradient-to-r from-primary-500 to-secondary-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-primary-600 hover:to-secondary-700 transition-all duration-300 shadow-medium hover:shadow-large hover-lift"
               >
                 Сохранить профиль
               </button>
@@ -304,18 +331,23 @@ export default function SpecialistDashboard() {
         {activeTab === 'applications' && (
           <div className="space-y-6">
             {/* Форма подачи заявки */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Подать заявку на услугу</h3>
+            <div className="glass rounded-2xl p-6 border border-white/20 shadow-soft">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-sm">📝</span>
+                </div>
+                <h3 className="text-xl font-bold text-neutral-800">Подать заявку на услугу</h3>
+              </div>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Категория
                   </label>
                   <select
                     value={application.categoryId}
                     onChange={(e) => setApplication({ ...application, categoryId: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                   >
                     <option value="">Выберите категорию</option>
                     {categories.map((category) => (
@@ -327,54 +359,54 @@ export default function SpecialistDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Название услуги
                   </label>
                   <input
                     type="text"
                     value={application.title}
                     onChange={(e) => setApplication({ ...application, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="Введите название услуги"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Описание услуги
                   </label>
                   <textarea
                     value={application.description}
                     onChange={(e) => setApplication({ ...application, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                     placeholder="Подробно опишите услугу"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">
                       Цена (₽)
                     </label>
                     <input
                       type="number"
                       value={application.price}
                       onChange={(e) => setApplication({ ...application, price: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                       placeholder="1000"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">
                       Длительность (мин)
                     </label>
                     <input
                       type="number"
                       value={application.duration}
                       onChange={(e) => setApplication({ ...application, duration: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 glass border border-white/20 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                       placeholder="60"
                     />
                   </div>
@@ -382,26 +414,34 @@ export default function SpecialistDashboard() {
               </div>
 
               <button
-                onClick={handleApplicationSubmit}
-                className="w-full mt-6 bg-gradient-to-r from-primary-500 to-secondary-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-primary-600 hover:to-secondary-700 transition-all duration-300"
+                onClick={() => {
+                  handleApplicationSubmit();
+                  vibrate();
+                }}
+                className="w-full mt-6 bg-gradient-to-r from-accent-500 to-accent-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-accent-600 hover:to-accent-700 transition-all duration-300 shadow-medium hover:shadow-large hover-lift"
               >
                 Отправить заявку
               </button>
             </div>
 
             {/* Статистика */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Статистика</h3>
+            <div className="glass rounded-2xl p-6 border border-white/20 shadow-soft">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-sm">📊</span>
+                </div>
+                <h3 className="text-xl font-bold text-neutral-800">Статистика</h3>
+              </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl">
+                <div className="text-center p-4 glass border border-white/20 rounded-xl hover-lift transition-all duration-300">
                   <div className="text-2xl font-bold text-primary-600">0</div>
-                  <div className="text-sm text-gray-600">Активных заказов</div>
+                  <div className="text-sm text-neutral-600">Активных заказов</div>
                 </div>
                 
-                <div className="text-center p-4 bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl">
+                <div className="text-center p-4 glass border border-white/20 rounded-xl hover-lift transition-all duration-300">
                   <div className="text-2xl font-bold text-secondary-600">0</div>
-                  <div className="text-sm text-gray-600">Выполнено</div>
+                  <div className="text-sm text-neutral-600">Выполнено</div>
                 </div>
               </div>
             </div>
@@ -411,25 +451,30 @@ export default function SpecialistDashboard() {
         {activeTab === 'services' && (
           <div className="space-y-6">
             {/* Список услуг */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Мои услуги</h3>
+            <div className="glass rounded-2xl p-6 border border-white/20 shadow-soft">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-sm">🛠️</span>
+                </div>
+                <h3 className="text-xl font-bold text-neutral-800">Мои услуги</h3>
+              </div>
               
               {services.length === 0 ? (
                 <div className="text-center py-8">
                   <div className="text-4xl mb-4">📝</div>
-                  <p className="text-gray-600 mb-2">У вас пока нет услуг</p>
-                  <p className="text-gray-500 text-sm">Создайте свою первую услугу во вкладке &quot;Заявки&quot;</p>
+                  <p className="text-neutral-600 mb-2">У вас пока нет услуг</p>
+                  <p className="text-neutral-500 text-sm">Создайте свою первую услугу во вкладке "Заявки"</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {services.map((service: SpecialistService) => (
-                    <div key={service.id} className="border border-gray-200 rounded-xl p-4">
+                    <div key={service.id} className="glass border border-white/20 rounded-xl p-4 hover-lift transition-all duration-300">
                       <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-semibold text-gray-900">{service.name}</h4>
+                        <h4 className="font-semibold text-neutral-800">{service.name}</h4>
                         <span className="text-primary-600 font-semibold">₽{service.price}</span>
                       </div>
-                      <p className="text-gray-600 text-sm mb-2">{service.description}</p>
-                      <div className="flex justify-between items-center text-xs text-gray-500">
+                      <p className="text-neutral-600 text-sm mb-2">{service.description}</p>
+                      <div className="flex justify-between items-center text-xs text-neutral-500">
                         <span>Длительность: {service.duration} мин</span>
                         <span>Категория: {service.category?.name}</span>
                       </div>
