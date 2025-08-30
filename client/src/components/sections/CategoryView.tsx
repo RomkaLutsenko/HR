@@ -115,20 +115,24 @@ export default function CategoryView() {
                       )}
                     </div>
                     <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{specialist.description}</p>
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <span className="text-yellow-500">⭐</span>
-                        <span className="text-sm text-neutral-600 font-medium">{specialist.rating}</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-neutral-400">⏱️</span>
+                          <span className="text-sm text-neutral-600">{specialist.experience}</span>
+                        </div>
+                        <span className="text-primary-600 font-bold">{specialist.hourlyRate} ₽/час</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <span className="text-neutral-400">📝</span>
-                        <span className="text-sm text-neutral-600">{specialist.reviewCount}</span>
+                      <div className="flex flex-col items-center space-y-1">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-yellow-500">⭐</span>
+                          <span className="text-sm text-neutral-600 font-medium">{specialist.rating}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <span className="text-neutral-400">📝</span>
+                          <span className="text-sm text-neutral-600">{specialist.reviewCount}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <span className="text-neutral-400">⏱️</span>
-                        <span className="text-sm text-neutral-600">{specialist.experience}</span>
-                      </div>
-                      <span className="text-primary-600 font-bold">{specialist.hourlyRate} ₽/час</span>
                     </div>
                   </div>
                 </div>
@@ -162,26 +166,30 @@ export default function CategoryView() {
                   <h4 className="text-lg font-semibold text-neutral-800 mb-2">{service.name}</h4>
                   <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{service.description}</p>
                   
-                  <div className="flex items-center space-x-4 mb-3">
-                    <span className="text-primary-600 font-bold text-lg">{service.price} ₽</span>
-                    <div className="flex items-center space-x-1">
-                      <span className="text-neutral-400">⏱️</span>
-                      <span className="text-sm text-neutral-600">{Math.floor(service.duration / 60)}ч</span>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-4">
+                      <span className="text-primary-600 font-bold text-lg">{service.price} ₽</span>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-neutral-400">⏱️</span>
+                        <span className="text-sm text-neutral-600">{Math.floor(service.duration / 60)}ч</span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <span className="text-yellow-500">⭐</span>
-                      <span className="text-sm text-neutral-600 font-medium">{service.rating}</span>
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="flex items-center space-x-1">
+                        <span className="text-yellow-500">⭐</span>
+                        <span className="text-sm text-neutral-600 font-medium">{service.rating}</span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setSelectedService(service);
+                          setShowReviews(true);
+                          vibrate();
+                        }}
+                        className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                      >
+                        📝 {service.reviewCount} отзывов
+                      </button>
                     </div>
-                    <button
-                      onClick={() => {
-                        setSelectedService(service);
-                        setShowReviews(true);
-                        vibrate();
-                      }}
-                      className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
-                    >
-                      📝 {service.reviewCount} отзывов
-                    </button>
                   </div>
 
                   {selectedSpecialist && specialist && (
