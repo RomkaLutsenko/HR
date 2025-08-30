@@ -2,12 +2,12 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import {
-    addToCart,
-    clearCart,
-    decreaseQuantity,
-    removeFromCart,
-    updateItemDate,
-    updateItemNotes,
+  addToCart,
+  clearCart,
+  decreaseQuantity,
+  removeFromCart,
+  updateItemDate,
+  updateItemNotes,
 } from '@/store/slices/cartSlice';
 import { RootState } from '@/store/store';
 import { useState } from 'react';
@@ -212,7 +212,7 @@ export default function Cart() {
         {/* Кнопки действий */}
         <div className="space-y-3">
           <button
-            className="w-full bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover-lift disabled:opacity-50 disabled:cursor-not-allowed border border-white/20"
             onClick={async () => {
               if (!user) {
                 alert('Необходимо войти в систему');

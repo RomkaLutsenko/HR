@@ -155,40 +155,38 @@ export default function ModeratorSpecialists() {
           ) : (
             specialists.map((specialist) => (
               <div key={specialist.id} className="px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      {specialist.avatar ? (
-                        <Image
-                          className="h-12 w-12 rounded-full"
-                          src={specialist.avatar}
-                          alt={specialist.name}
-                          width={48}
-                          height={48}
-                        />
-                      ) : (
-                        <div className="h-12 w-12 bg-gray-300 rounded-full flex items-center justify-center">
-                          <span className="text-gray-600 font-medium">
-                            {specialist.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-medium text-gray-900">{specialist.name}</h4>
-                      <div className="flex items-center space-x-2 mt-1">
-                        {getStatusBadge(specialist.isAvailable)}
-                        <span className="text-sm text-gray-500">
-                          Рейтинг: {specialist.rating.toFixed(1)} ⭐ ({specialist.reviewCount} отзывов)
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    {specialist.avatar ? (
+                      <Image
+                        className="h-12 w-12 rounded-full"
+                        src={specialist.avatar}
+                        alt={specialist.name}
+                        width={48}
+                        height={48}
+                      />
+                    ) : (
+                      <div className="h-12 w-12 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span className="text-gray-600 font-medium">
+                          {specialist.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {specialist.services?.length || 0} услуг • {specialist.hourlyRate} ₽/час
-                      </p>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-medium text-gray-900">{specialist.name}</h4>
+                    <div className="flex items-center space-x-2 mt-1">
+                      {getStatusBadge(specialist.isAvailable)}
+                      <span className="text-sm text-gray-500">
+                        Рейтинг: {specialist.rating.toFixed(1)} ⭐ ({specialist.reviewCount} отзывов)
+                      </span>
                     </div>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {specialist.services?.length || 0} услуг • {specialist.hourlyRate} ₽/час
+                    </p>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 flex-shrink-0">
                     {specialist.isAvailable ? (
                       <button
                         onClick={() => handleSpecialistAction(specialist.id, 'DEACTIVATE')}
