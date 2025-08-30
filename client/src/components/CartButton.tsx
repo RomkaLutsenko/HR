@@ -22,7 +22,7 @@ export default function CartButton() {
 
   return (
     <div
-      className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 rounded-2xl flex items-center justify-center text-white text-xl shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer hover:scale-105 hover-lift"
+      className="relative w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 rounded-2xl flex items-center justify-center text-white text-xl shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer hover:scale-105 hover-lift"
       onClick={() => {
         handleCart();
         vibrate();
