@@ -3,6 +3,7 @@
 import { addToCart, decreaseQuantity } from '@/store/slices/cartSlice';
 import { setActiveSection } from '@/store/slices/uiSlice';
 import { RootState } from '@/store/store';
+import { Service, Specialist } from '@/types/types';
 import { getServicesByCategory, getSpecialistsByCategory } from '@/utils/data/services';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +15,7 @@ export default function CategoryView() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [selectedSpecialist, setSelectedSpecialist] = useState<number | null>(null);
   const [showReviews, setShowReviews] = useState(false);
-  const [selectedService, setSelectedService] = useState<any>(null);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const services = getServicesByCategory(currentCategory);
   const specialists = getSpecialistsByCategory(currentCategory);
@@ -36,7 +37,7 @@ export default function CategoryView() {
     return item ? item.quantity : 0;
   };
 
-  const handleAddToCart = (service: any, specialist?: any) => {
+  const handleAddToCart = (service: Service, specialist?: Specialist) => {
     dispatch(addToCart({ 
       service, 
       specialist,
@@ -102,7 +103,20 @@ export default function CategoryView() {
                     <span className="text-white text-xl">{specialist.avatar}</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-neutral-800 text-lg mb-1">{specialist.name}</h4>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-neutral-800 text-lg">{specialist.name}</h4>
+                      {specialist.isAvailable ? (
+                        <div className="flex items-center space-x-1 text-green-600">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-sm font-medium">Доступен</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-1 text-red-600">
+                          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                          <span className="text-sm font-medium">Занят</span>
+                        </div>
+                      )}
+                    </div>
                     <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{specialist.description}</p>
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-1">
@@ -119,19 +133,6 @@ export default function CategoryView() {
                       </div>
                       <span className="text-primary-600 font-bold">{specialist.hourlyRate} ₽/час</span>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    {specialist.isAvailable ? (
-                      <div className="flex items-center space-x-1 text-green-600">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="text-sm font-medium">Доступен</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center space-x-1 text-red-600">
-                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                        <span className="text-sm font-medium">Занят</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
