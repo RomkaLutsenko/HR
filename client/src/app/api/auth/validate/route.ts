@@ -1,7 +1,7 @@
+import { prisma } from '@/server/prisma';
 import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/server/prisma';
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const ACCESS_TOKEN_EXPIRES_IN = '30m';
 const REFRESH_TOKEN_EXPIRES_IN_DAYS = 14;
