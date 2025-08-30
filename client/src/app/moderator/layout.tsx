@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 
 interface ModeratorLayoutProps {
@@ -10,13 +9,16 @@ interface ModeratorLayoutProps {
 
 export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
   const { user, status, logout, isLoggingOut } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'loading' && (!user || user.role !== 'MODERATOR')) {
-      router.push('/');
+    if (status !== 'loading') {
+      if (!user || user.role !== 'MODERATOR') {
+        console.log('User not authorized for moderator panel, redirecting...');
+        // Принудительно перенаправляем на главную страницу
+        window.location.replace('/');
+      }
     }
-  }, [user, status, router]);
+  }, [user, status]);
 
   if (status === 'loading') {
     return (
@@ -30,7 +32,16 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
   }
 
   if (!user || user.role !== 'MODERATOR') {
-    return null;
+    // Если пользователь не авторизован или не модератор, показываем загрузку
+    // и useEffect перенаправит на главную страницу
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Перенаправление...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
