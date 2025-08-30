@@ -17,7 +17,7 @@ export default function ModeratorPage() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/moderator/applications');
+      const response = await api.getModeratorApplications();
       if (response.success) {
         setDashboard(response.dashboard);
       }
@@ -30,11 +30,7 @@ export default function ModeratorPage() {
 
   const handleApplicationAction = async (applicationId: number, action: 'APPROVE' | 'REJECT', comment?: string) => {
     try {
-      const response = await api.post('/moderator/applications', {
-        applicationId,
-        action,
-        comment
-      });
+      const response = await api.processApplication(applicationId, action, comment);
 
       if (response.success) {
         // Обновляем дашборд
@@ -45,20 +41,7 @@ export default function ModeratorPage() {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      PENDING: { color: 'bg-yellow-100 text-yellow-800', text: 'Ожидает' },
-      APPROVED: { color: 'bg-green-100 text-green-800', text: 'Одобрена' },
-      REJECTED: { color: 'bg-red-100 text-red-800', text: 'Отклонена' }
-    };
 
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-        {config.text}
-      </span>
-    );
-  };
 
   if (loading) {
     return (
@@ -235,6 +218,21 @@ export default function ModeratorPage() {
     </div>
   );
 }
+
+const getStatusBadge = (status: string) => {
+  const statusConfig = {
+    PENDING: { color: 'bg-yellow-100 text-yellow-800', text: 'Ожидает' },
+    APPROVED: { color: 'bg-green-100 text-green-800', text: 'Одобрена' },
+    REJECTED: { color: 'bg-red-100 text-red-800', text: 'Отклонена' }
+  };
+
+  const config = statusConfig[status as keyof typeof statusConfig];
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+      {config.text}
+    </span>
+  );
+};
 
 interface ApplicationCardProps {
   application: SpecialistApplication;

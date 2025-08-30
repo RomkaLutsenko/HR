@@ -24,7 +24,7 @@ export default function SpecialistApplications() {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/specialist/applications');
+      const response = await api.getSpecialistApplications();
       if (response.success) {
         setApplications(response.applications);
       }
@@ -39,7 +39,10 @@ export default function SpecialistApplications() {
     e.preventDefault();
     
     try {
-      const response = await api.post('/specialist/applications', formData);
+      const response = await api.createSpecialistApplication({
+        ...formData,
+        hourlyRate: parseFloat(formData.hourlyRate)
+      });
       if (response.success) {
         setShowForm(false);
         setFormData({

@@ -1,4 +1,4 @@
-import { Order, OrderStatus, Review, Service, ServiceCategory, Specialist } from '@/types/types';
+import { ModeratorDashboard, Order, OrderStatus, Review, Service, ServiceCategory, Specialist, SpecialistApplication } from '@/types/types';
 
 const API_BASE = '/api';
 
@@ -192,7 +192,7 @@ export const api = {
   },
 
   // Модератор API
-  async getModeratorApplications(): Promise<{ success: boolean; dashboard: unknown }> {
+  async getModeratorApplications(): Promise<{ success: boolean; dashboard: ModeratorDashboard }> {
     const response = await fetch(`${API_BASE}/moderator/applications`);
     return response.json();
   },
@@ -220,6 +220,30 @@ export const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ specialistId, action }),
+    });
+    return response.json();
+  },
+
+  // Специалист API
+  async getSpecialistApplications(): Promise<{ success: boolean; applications: SpecialistApplication[] }> {
+    const response = await fetch(`${API_BASE}/specialist/applications`);
+    return response.json();
+  },
+
+  async createSpecialistApplication(applicationData: {
+    name: string;
+    avatar?: string;
+    experience: string;
+    description: string;
+    categories: string[];
+    hourlyRate: number;
+  }): Promise<{ success: boolean; application?: SpecialistApplication; message: string }> {
+    const response = await fetch(`${API_BASE}/specialist/applications`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(applicationData),
     });
     return response.json();
   },
