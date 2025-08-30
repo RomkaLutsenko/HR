@@ -1,5 +1,5 @@
-import Cart from './Cart';
 import { useAuth } from '@/hooks/useAuth';
+import CartButton from './CartButton';
 
 export default function Header() {
   const { user } = useAuth();
@@ -19,7 +19,7 @@ export default function Header() {
           }
         </p>
       </div>
-      {!isSpecialist && <Cart />}
+      {!isSpecialist && <CartButton />}
     </div>
   );
 }

@@ -151,18 +151,6 @@ export default function SpecialistDashboard() {
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
-      {/* Заголовок */}
-      <div className="bg-white shadow-sm border-b border-gray-100 px-4 py-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Панель исполнителя</h1>
-            <p className="text-gray-600 text-sm">Управление профилем и заявками</p>
-          </div>
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-xl">🛠️</span>
-          </div>
-        </div>
-      </div>
 
       {/* Табы */}
       <div className="bg-white border-b border-gray-100">
