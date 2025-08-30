@@ -3,10 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const orderId = parseInt(params.id);
+    const orderId = parseInt(id);
     const body = await request.json();
     const { statusId, specialistId, scheduledDate, notes } = body;
 
@@ -68,10 +69,11 @@ export async function PUT(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const orderId = parseInt(params.id);
+    const orderId = parseInt(id);
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
