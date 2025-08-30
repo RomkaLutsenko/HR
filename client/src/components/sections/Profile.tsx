@@ -160,14 +160,14 @@ export default function Profile() {
           <button
             onClick={handleRoleToggle}
             disabled={isLoading}
-            className={`w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+            className={`text-black w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
               isLoading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white hover:shadow-lg hover:scale-105 active:scale-95'
             }`}
           >
             {isLoading ? (
-              <div className="flex items-center justify-center text-black">
+              <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                 Переключение...
               </div>
