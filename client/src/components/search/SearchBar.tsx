@@ -7,17 +7,15 @@ import { useSearch } from './useSearch';
 
 interface SearchContainerProps {
   onSearchResults?: (services: Service[]) => void;
-  categoryId?: number;
   placeholder?: string;
 }
 
 const SearchBar = memo(({ 
   onSearchResults, 
-  categoryId, 
   placeholder = "Поиск услуг..." 
 }: SearchContainerProps) => {
   const [isFocused, setIsFocused] = useState(false);
-  const { searchTerm, isSearching, handleSearch } = useSearch({ onSearchResults, categoryId });
+  const { searchTerm, isSearching, handleSearch } = useSearch({ onSearchResults });
 
   const handleFocus = useCallback(() => {
     setIsFocused(true);

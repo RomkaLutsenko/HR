@@ -75,8 +75,8 @@ export const api = {
     return this.getServices({ isPopular: true, limit });
   },
 
-  async searchServices(searchTerm: string, categoryId?: number): Promise<Service[]> {
-    return this.getServices({ search: searchTerm, categoryId });
+  async searchServices(searchTerm: string): Promise<Service[]> {
+    return this.getServices({ search: searchTerm });
   },
 
   // Специалисты
