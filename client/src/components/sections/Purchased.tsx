@@ -1,7 +1,8 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import { Service, Specialist } from '@/types/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PurchasedItem {
   id: number;
@@ -14,66 +15,56 @@ interface PurchasedItem {
 }
 
 export default function Purchased() {
+  const { user } = useAuth();
   const [selectedItem, setSelectedItem] = useState<PurchasedItem | null>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
+  const [purchasedItems, setPurchasedItems] = useState<PurchasedItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for past purchases
-  const purchasedItems: PurchasedItem[] = [
-    {
-      id: 1,
-      service: {
-        id: 1,
-        name: 'Бизнес-консультация',
-        description: 'Профессиональная консультация по развитию бизнеса',
-        price: 5000,
-        duration: 120,
-        categoryId: 4,
-        specialists: [],
-        rating: 4.8,
-        reviewCount: 127,
-        isPopular: true,
-        image: '💼'
-      },
-      specialist: {
-        id: 1,
-        name: 'Елена Воробьева',
-        avatar: '👩‍💼',
-        rating: 4.9,
-        reviewCount: 203,
-        experience: '15 лет',
-        description: 'Опытный бизнес-консультант',
-        categories: ['Консультации'],
-        hourlyRate: 2500,
-        isAvailable: true
-      },
-      orderDate: '2025-01-15',
-      totalPrice: 5000,
-      status: 'completed',
-      hasReview: false
-    },
-    {
-      id: 2,
-      service: {
-        id: 2,
-        name: 'Юридическая консультация',
-        description: 'Консультация по правовым вопросам',
-        price: 3000,
-        duration: 60,
-        categoryId: 4,
-        specialists: [],
-        rating: 4.7,
-        reviewCount: 89,
-        isPopular: false,
-        image: '⚖️'
-      },
-      orderDate: '2025-01-10',
-      totalPrice: 3000,
-      status: 'completed',
-      hasReview: true
-    }
-  ];
+  // Загружаем реальные данные о покупках
+  useEffect(() => {
+    const fetchPurchasedItems = async () => {
+      if (!user) return;
+      
+      try {
+        const response = await fetch(`/api/orders?userId=${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Преобразуем данные из API в формат PurchasedItem
+          const items: PurchasedItem[] = data.orders.map((order: {
+            id: number;
+            service: Service;
+            specialist?: Specialist;
+            createdAt: string;
+            totalPrice: number;
+            status: { name: string };
+          }) => ({
+            id: order.id,
+            service: order.service,
+            specialist: order.specialist,
+            orderDate: order.createdAt,
+            totalPrice: order.totalPrice,
+            status: order.status.name === 'Завершен' ? 'completed' : 
+                   order.status.name === 'Отменен' ? 'cancelled' : 'completed', // Показываем все заказы как завершенные для демонстрации
+            hasReview: false // TODO: добавить проверку наличия отзыва
+          }));
+          
+          setPurchasedItems(items);
+        }
+      } catch (error) {
+        console.error('Error fetching purchased items:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPurchasedItems();
+  }, [user]);
+
+  // Mock data for past purchases (fallback) - удалено, так как теперь используем реальные данные
 
   const handleReview = (item: PurchasedItem) => {
     setSelectedItem(item);
@@ -103,6 +94,16 @@ export default function Purchased() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="px-6 pb-24">
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-6 pb-24">
       {/* Заголовок */}
@@ -117,8 +118,17 @@ export default function Purchased() {
       </div>
 
       {/* Список покупок */}
-      <div className="space-y-4">
-        {purchasedItems.map((item, index) => (
+      {purchasedItems.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="w-16 h-16 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl">📦</span>
+          </div>
+          <h3 className="text-lg font-semibold text-neutral-800 mb-2">У вас пока нет покупок</h3>
+          <p className="text-neutral-600">Оформите заказ, чтобы увидеть его здесь</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {purchasedItems.map((item, index) => (
           <div
             key={item.id}
             className="glass rounded-2xl p-5 border border-white/20 shadow-soft hover:shadow-medium transition-all duration-300"
@@ -192,7 +202,8 @@ export default function Purchased() {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* Модальное окно отзыва */}
       {showReviewModal && selectedItem && (

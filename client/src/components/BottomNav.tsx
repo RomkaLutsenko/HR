@@ -36,7 +36,7 @@ export default function BottomNav() {
   return (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 max-w-sm w-full z-50 px-1 h-17">
       <div className="glass rounded-2xl border border-white/20 shadow-large backdrop-blur-xl">
-        <div className="flex justify-around items-center">
+        <div className="flex justify-between items-center">
           {sections.map((item) => {
             const isActive = pathname === item.path;
             return (

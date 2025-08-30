@@ -19,6 +19,7 @@ export default function Cart() {
   const { user } = useAuth();
 
   const [showModal, setShowModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + item.quantity * item.service.price, 0);
@@ -211,15 +212,71 @@ export default function Cart() {
         {/* Кнопки действий */}
         <div className="space-y-3">
           <button
-            className="w-full bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift"
-            onClick={() => {
-              setShowModal(true);
-              vibrate();
+            className="w-full bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={async () => {
+              if (!user) {
+                alert('Необходимо войти в систему');
+                return;
+              }
+              
+              if (items.length === 0) {
+                alert('Корзина пуста');
+                return;
+              }
+              
+              setIsProcessing(true);
+              try {
+                // Создаем заказы для каждого товара в корзине
+                for (const item of items) {
+                  const orderData = {
+                    userId: user.id,
+                    serviceId: item.service.id,
+                    specialistId: item.specialist?.id || null,
+                    totalPrice: item.service.price * item.quantity,
+                    scheduledDate: item.scheduledDate || null,
+                    notes: item.notes || null
+                  };
+
+                  const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData),
+                  });
+
+                  if (!response.ok) {
+                    throw new Error('Ошибка при создании заказа');
+                  }
+                }
+
+                setShowModal(true);
+                vibrate();
+              } catch (error) {
+                console.error('Error creating order:', error);
+                if (error instanceof Error) {
+                  alert(`Ошибка при оформлении заказа: ${error.message}`);
+                } else {
+                  alert('Произошла ошибка при оформлении заказа. Попробуйте еще раз.');
+                }
+              } finally {
+                setIsProcessing(false);
+              }
             }}
+            disabled={isProcessing}
           >
             <div className="flex items-center justify-center space-x-2">
-              <span className="text-lg">✅</span>
-              <span>Оформить заказ</span>
+              {isProcessing ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Обработка...</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-lg">✅</span>
+                  <span>Оформить заказ</span>
+                </>
+              )}
             </div>
           </button>
           <button

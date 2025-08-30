@@ -7,6 +7,8 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
     const statusId = searchParams.get('statusId');
 
+    console.log('📋 Получение заказов:', { userId, statusId });
+
     const where: {
       userId?: number;
       statusId?: number;
@@ -44,6 +46,8 @@ export async function GET(request: NextRequest) {
       }
     });
 
+    console.log(`✅ Найдено заказов: ${orders.length}`);
+
     return NextResponse.json({ 
       success: true, 
       orders 
@@ -60,7 +64,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { userId, serviceId, specialistId, totalPrice, scheduledDate, notes } = body;
 
+    console.log('📝 Создание заказа:', { userId, serviceId, specialistId, totalPrice, scheduledDate, notes });
+
     if (!userId || !serviceId || !totalPrice) {
+      console.error('❌ Отсутствуют обязательные поля:', { userId, serviceId, totalPrice });
       return NextResponse.json({ 
         error: 'Missing required fields' 
       }, { status: 400 });
@@ -105,6 +112,8 @@ export async function POST(request: NextRequest) {
         status: true
       }
     });
+
+    console.log('✅ Заказ создан успешно:', order.id);
 
     return NextResponse.json({ 
       success: true, 
