@@ -15,7 +15,7 @@ export default function Header() {
         <p className="text-sm text-gray-600">
           {isSpecialist 
             ? 'Панель исполнителя' 
-            : 'Профессиональные услуги для вашего бизнеса'
+            : 'Профессиональные услуги для Вас'
           }
         </p>
       </div>

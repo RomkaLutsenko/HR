@@ -1,7 +1,7 @@
 'use client';
 import { Service } from '@/types/types';
 import { api } from '@/utils/api';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface SearchBarProps {
   onSearchResults?: (services: Service[]) => void;
@@ -13,7 +13,7 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [searchCache, setSearchCache] = useState<Map<string, Service[]>>(new Map());
+  const searchCache = useRef<Map<string, Service[]>>(new Map());
 
   const performSearch = useCallback(async (term: string) => {
     if (term.length < 2) {
@@ -23,8 +23,8 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
 
     // Проверяем кэш
     const cacheKey = `${term}-${categoryId || 'all'}`;
-    if (searchCache.has(cacheKey)) {
-      onSearchResults?.(searchCache.get(cacheKey)!);
+    if (searchCache.current.has(cacheKey)) {
+      onSearchResults?.(searchCache.current.get(cacheKey)!);
       return;
     }
 
@@ -32,7 +32,7 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
     try {
       const services = await api.searchServices(term, categoryId);
       // Сохраняем в кэш
-      setSearchCache(prev => new Map(prev).set(cacheKey, services));
+      searchCache.current.set(cacheKey, services);
       onSearchResults?.(services);
     } catch (error) {
       console.error('Search error:', error);
@@ -40,14 +40,13 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
     } finally {
       setIsSearching(false);
     }
-  }, [onSearchResults, categoryId, searchCache]);
+  }, [onSearchResults, categoryId]);
 
   // Очищаем кэш при смене категории
   useEffect(() => {
-    setSearchCache(new Map());
+    searchCache.current.clear();
   }, [categoryId]);
 
-  // Debounced search с увеличенной задержкой
   useEffect(() => {
     if (searchTerm.length < 2) {
       onSearchResults?.([]);
@@ -56,7 +55,7 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
 
     const timeoutId = setTimeout(() => {
       performSearch(searchTerm);
-    }, 1200); // Увеличили задержку до 1200мс
+    }, 700);
 
     return () => clearTimeout(timeoutId);
   }, [searchTerm, performSearch, onSearchResults]);
