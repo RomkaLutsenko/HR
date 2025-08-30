@@ -163,45 +163,54 @@ export default function SpecialistDashboard() {
       {/* Табы */}
       <div className="px-6">
         <div className="glass rounded-2xl border border-white/20 shadow-soft">
-          <div className="flex">
+          <div className="flex w-full">
             <button
               onClick={() => {
                 setActiveTab('profile');
                 vibrate();
               }}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 rounded-l-2xl ${
+              className={`flex-1 min-w-0 py-4 px-3 sm:px-6 text-center font-medium transition-all duration-300 rounded-l-2xl text-sm sm:text-base ${
                 activeTab === 'profile'
                   ? 'text-primary-600 bg-white/80 shadow-medium'
                   : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
               }`}
             >
-              Профиль
+              <div className="flex flex-col items-center space-y-1">
+                <span className="text-lg sm:text-xl">👤</span>
+                <span className="truncate">Профиль</span>
+              </div>
             </button>
             <button
               onClick={() => {
                 setActiveTab('applications');
                 vibrate();
               }}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+              className={`flex-1 min-w-0 py-4 px-3 sm:px-6 text-center font-medium transition-all duration-300 text-sm sm:text-base ${
                 activeTab === 'applications'
                   ? 'text-primary-600 bg-white/80 shadow-medium'
                   : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
               }`}
             >
-              Заявки
+              <div className="flex flex-col items-center space-y-1">
+                <span className="text-lg sm:text-xl">📝</span>
+                <span className="truncate">Заявки</span>
+              </div>
             </button>
             <button
               onClick={() => {
                 setActiveTab('services');
                 vibrate();
               }}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 rounded-r-2xl ${
+              className={`flex-1 min-w-0 py-4 px-3 sm:px-6 text-center font-medium transition-all duration-300 rounded-r-2xl text-sm sm:text-base ${
                 activeTab === 'services'
                   ? 'text-primary-600 bg-white/80 shadow-medium'
                   : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
               }`}
             >
-              Услуги
+              <div className="flex flex-col items-center space-y-1">
+                <span className="text-lg sm:text-xl">🛠️</span>
+                <span className="truncate">Услуги</span>
+              </div>
             </button>
           </div>
         </div>
@@ -463,7 +472,7 @@ export default function SpecialistDashboard() {
                 <div className="text-center py-8">
                   <div className="text-4xl mb-4">📝</div>
                   <p className="text-neutral-600 mb-2">У вас пока нет услуг</p>
-                  <p className="text-neutral-500 text-sm">Создайте свою первую услугу во вкладке "Заявки"</p>
+                  <p className="text-neutral-500 text-sm">Создайте свою первую услугу во вкладке &quot;Заявки&quot;</p>
                 </div>
               ) : (
                 <div className="space-y-4">
