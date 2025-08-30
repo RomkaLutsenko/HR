@@ -256,11 +256,11 @@ export default function CategoryView() {
                       </button>
                       <span className="text-lg font-bold text-neutral-800 min-w-[2rem] text-center">{quantity}</span>
                       <button
-                        className="w-10 h-10 bg-primary-100 hover:bg-primary-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105"
+                        className="w-10 h-10 bg-neutral-100 hover:bg-neutral-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105"
                         onClick={() => handleAddToCart(service, specialist)}
                         disabled={Boolean(selectedSpecialist && !specialist?.isAvailable)}
                       >
-                        <span className="text-lg font-bold text-primary-600">+</span>
+                        <span className="text-lg font-bold text-neutral-600">+</span>
                       </button>
                       <div className="flex items-center space-x-2 text-green-600">
                         <span className="text-sm">✓</span>
