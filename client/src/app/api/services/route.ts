@@ -7,10 +7,15 @@ export async function GET(request: NextRequest) {
     const categoryId = searchParams.get('categoryId');
     const isPopular = searchParams.get('isPopular');
     const limit = searchParams.get('limit');
+    const search = searchParams.get('search');
 
     const where: {
       categoryId?: number;
       isPopular?: boolean;
+      OR?: Array<{
+        name?: { contains: string; mode: 'insensitive' };
+        description?: { contains: string; mode: 'insensitive' };
+      }>;
     } = {};
     
     if (categoryId) {
@@ -19,6 +24,13 @@ export async function GET(request: NextRequest) {
     
     if (isPopular === 'true') {
       where.isPopular = true;
+    }
+
+    if (search && search.trim().length > 0) {
+      where.OR = [
+        { name: { contains: search.trim(), mode: 'insensitive' } },
+        { description: { contains: search.trim(), mode: 'insensitive' } }
+      ];
     }
 
     const services = await prisma.service.findMany({

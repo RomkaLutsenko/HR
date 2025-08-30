@@ -7,6 +7,7 @@ import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import SearchBar from '../SearchBar';
 import Reviews from './Reviews';
 
 export default function CategoryView() {
@@ -20,6 +21,8 @@ export default function CategoryView() {
   const [services, setServices] = useState<Service[]>([]);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState<Service[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -85,6 +88,14 @@ export default function CategoryView() {
     vibrate();
   };
 
+  const handleSearchResults = (results: Service[]) => {
+    setSearchResults(results);
+    setIsSearching(results.length > 0);
+  };
+
+  // Определяем, какие услуги показывать
+  const displayServices = isSearching ? searchResults : services;
+
   return (
     <div className="px-6 pb-16">
       {/* Заголовок */}
@@ -102,9 +113,17 @@ export default function CategoryView() {
         </button>
         <div className="ml-4">
           <h2 className="text-2xl font-bold text-neutral-800">{currentCategory}</h2>
-          <p className="text-sm text-neutral-600">{services.length} услуг доступно</p>
+          <p className="text-sm text-neutral-600">
+            {isSearching ? `${searchResults.length} результатов поиска` : `${services.length} услуг доступно`}
+          </p>
         </div>
       </div>
+
+      {/* Поиск */}
+      <SearchBar 
+        onSearchResults={handleSearchResults}
+        placeholder={`Поиск в категории "${currentCategory}"...`}
+      />
 
       {/* Специалисты */}
       {specialists.length > 0 && (
@@ -184,7 +203,8 @@ export default function CategoryView() {
           <h3 className="text-xl font-bold text-neutral-800">Услуги</h3>
         </div>
         
-        {services.map((service, index) => {
+        {displayServices.length > 0 ? (
+          displayServices.map((service, index) => {
           const quantity = getQuantity(service.id, selectedSpecialist || undefined);
           const specialist = specialists.find(s => s.id === selectedSpecialist);
           
@@ -271,7 +291,18 @@ export default function CategoryView() {
               </div>
             </div>
           );
-        })}
+        })
+        ) : (
+          <div className="text-center py-8">
+            <div className="text-4xl mb-4">🔍</div>
+            <h3 className="text-lg font-semibold text-neutral-800 mb-2">
+              {isSearching ? 'Ничего не найдено' : 'Услуги не найдены'}
+            </h3>
+            <p className="text-sm text-neutral-600">
+              {isSearching ? 'Попробуйте изменить поисковый запрос' : 'В данной категории пока нет услуг'}
+            </p>
+          </div>
+        )}
       </div>
 
       {showReviews && selectedService && (

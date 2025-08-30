@@ -1,16 +1,49 @@
 'use client';
-import { useState } from 'react';
+import { Service } from '@/types/types';
+import { api } from '@/utils/api';
+import { useCallback, useEffect, useState } from 'react';
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onSearchResults?: (services: Service[]) => void;
+  categoryId?: number;
+  placeholder?: string;
+}
+
+export default function SearchBar({ onSearchResults, categoryId, placeholder = "Поиск услуг..." }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const performSearch = useCallback(async (term: string) => {
+    if (term.length < 2) {
+      onSearchResults?.([]);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const services = await api.searchServices(term, categoryId);
+      onSearchResults?.(services);
+    } catch (error) {
+      console.error('Search error:', error);
+      onSearchResults?.([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [onSearchResults, categoryId]);
+
+  // Debounced search
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      performSearch(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, performSearch]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value.toLowerCase();
+    const term = e.target.value;
     setSearchTerm(term);
-    if (term.length > 2) {
-      console.log('Searching for:', term);
-    }
   };
 
   return (
@@ -31,12 +64,17 @@ export default function SearchBar() {
             <input
               type="text"
               className="flex-1 bg-transparent text-neutral-800 placeholder-neutral-500 text-base font-medium focus:outline-none"
-              placeholder="Поиск услуг..."
+              placeholder={placeholder}
               value={searchTerm}
               onChange={handleSearch}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             />
+            
+            {/* Индикатор загрузки */}
+            {isSearching && (
+              <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin mr-2"></div>
+            )}
             
             {/* Кнопка очистки */}
             {searchTerm && (

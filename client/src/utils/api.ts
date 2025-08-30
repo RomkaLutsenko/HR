@@ -48,11 +48,13 @@ export const api = {
     categoryId?: number;
     isPopular?: boolean;
     limit?: number;
+    search?: string;
   }): Promise<Service[]> {
     const searchParams = new URLSearchParams();
     if (params?.categoryId) searchParams.append('categoryId', params.categoryId.toString());
     if (params?.isPopular) searchParams.append('isPopular', 'true');
     if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.search) searchParams.append('search', params.search);
 
     const response = await fetch(`${API_BASE}/services?${searchParams}`);
     const data: ServicesResponse = await response.json();
@@ -71,6 +73,10 @@ export const api = {
 
   async getPopularServices(limit: number = 6): Promise<Service[]> {
     return this.getServices({ isPopular: true, limit });
+  },
+
+  async searchServices(searchTerm: string, categoryId?: number): Promise<Service[]> {
+    return this.getServices({ search: searchTerm, categoryId });
   },
 
   // Специалисты
