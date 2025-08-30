@@ -87,9 +87,11 @@ export default function MainMenu() {
             >
               <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white text-xl">{service.image}</span>
-                    <h3 className="font-semibold text-neutral-800 text-lg mb-1 group-hover:text-primary-600 transition-colors">
+                  <div className="flex items-center space-x-3 mb-1">
+                    <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-lg flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-white text-sm">{service.image}</span>
+                    </div>
+                    <h3 className="font-semibold text-neutral-800 text-lg group-hover:text-primary-600 transition-colors">
                       {service.name}
                     </h3>
                   </div>

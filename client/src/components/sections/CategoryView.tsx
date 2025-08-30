@@ -86,7 +86,7 @@ export default function CategoryView() {
   };
 
   return (
-    <div className="px-6 pb-24">
+    <div className="px-6 pt-6 pb-16">
       {/* Заголовок */}
       <div className="flex items-center mb-6 pb-4 border-b border-white/20">
         <button
