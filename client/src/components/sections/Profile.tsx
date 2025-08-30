@@ -198,7 +198,7 @@ export default function Profile() {
         {/* Информация о приложении */}
         <div className="text-center text-neutral-500 text-sm">
           <p>Версия приложения: 1.0.0</p>
-          <p className="mt-1">© 2024 HR Services</p>
+          <p className="mt-1">© 2025 HR Services</p>
         </div>
       </div>
     </div>
