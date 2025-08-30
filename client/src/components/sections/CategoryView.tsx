@@ -101,6 +101,9 @@ export default function CategoryView() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <h1 className="ml-4 text-xl font-bold text-neutral-800">
+          {currentCategory || 'Категория'}
+        </h1>
       </div>
 
       {/* Специалисты */}
