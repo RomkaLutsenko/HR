@@ -30,11 +30,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: 'need_phone' });
     }
 
-    const accessToken = jwt.sign({ id: user.id, telegramId }, JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.id, telegramId }, JWT_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
 
-    const refreshToken = jwt.sign({ id: user.id, telegramId, type: 'refresh' }, JWT_SECRET, {
+    const refreshToken = jwt.sign({ userId: user.id, telegramId, type: 'refresh' }, JWT_SECRET, {
       expiresIn: `${REFRESH_TOKEN_EXPIRES_IN_DAYS}d`,
     });
 

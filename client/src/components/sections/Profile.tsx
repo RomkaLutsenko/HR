@@ -24,6 +24,7 @@ export default function Profile() {
       
       // Получаем токен из cookie
       const token = getCookie('accessToken');
+      console.log('Token:', token ? 'exists' : 'not found');
 
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
@@ -34,11 +35,14 @@ export default function Profile() {
         body: JSON.stringify({ role: newRole }),
       });
 
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         // Обновляем страницу для применения изменений
         window.location.reload();
       } else {
-        console.error('Failed to update role');
+        const errorData = await response.text();
+        console.error('Failed to update role:', errorData);
       }
     } catch (error) {
       console.error('Error updating role:', error);
@@ -160,7 +164,7 @@ export default function Profile() {
           <button
             onClick={handleRoleToggle}
             disabled={isLoading}
-            className={`text-black w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+            className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
               isLoading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white hover:shadow-lg hover:scale-105 active:scale-95'

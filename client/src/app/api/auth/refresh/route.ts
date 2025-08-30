@@ -3,12 +3,12 @@ import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const ACCESS_TOKEN_EXPIRES_IN = '30m';
 const REFRESH_TOKEN_EXPIRES_IN_DAYS = 14;
 
 interface JwtPayload {
-  id: number;
+  userId: number;
   telegramId: string;
   type?: string;
 }
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { id: decoded.userId },
     });
 
     if (!user || user.refreshToken !== refreshTokenFromCookie) {
@@ -37,12 +37,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Создаем новый accessToken
-    const accessToken = jwt.sign({ id: user.id, telegramId: user.telegramId }, JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.id, telegramId: user.telegramId }, JWT_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
 
     // Создаем новый refreshToken
-    const newRefreshToken = jwt.sign({ id: user.id, telegramId: user.telegramId, type: 'refresh' }, JWT_SECRET, {
+    const newRefreshToken = jwt.sign({ userId: user.id, telegramId: user.telegramId, type: 'refresh' }, JWT_SECRET, {
         expiresIn: `${REFRESH_TOKEN_EXPIRES_IN_DAYS}d`,
     });
 
