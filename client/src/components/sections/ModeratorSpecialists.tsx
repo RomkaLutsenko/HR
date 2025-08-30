@@ -155,8 +155,8 @@ export default function ModeratorSpecialists() {
           ) : (
             specialists.map((specialist) => (
               <div key={specialist.id} className="px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                  <div className="flex items-center space-x-4 min-w-0 flex-1">
                     <div className="flex-shrink-0">
                       {specialist.avatar ? (
                         <Image
@@ -174,26 +174,26 @@ export default function ModeratorSpecialists() {
                         </div>
                       )}
                     </div>
-                    <div>
-                      <h4 className="text-lg font-medium text-gray-900">{specialist.name}</h4>
-                      <div className="flex items-center space-x-2 mt-1">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-lg font-medium text-gray-900 truncate">{specialist.name}</h4>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 mt-1 gap-1">
                         {getStatusBadge(specialist.isAvailable)}
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-gray-500 truncate">
                           Рейтинг: {specialist.rating.toFixed(1)} ⭐ ({specialist.reviewCount} отзывов)
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p className="text-sm text-gray-500 mt-1 truncate">
                         {specialist.services?.length || 0} услуг • {specialist.hourlyRate} ₽/час
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-shrink-0">
                     {specialist.isAvailable ? (
                       <button
                         onClick={() => handleSpecialistAction(specialist.id, 'DEACTIVATE')}
                         disabled={isProcessing === specialist.id}
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                        className="inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 whitespace-nowrap"
                       >
                         {isProcessing === specialist.id ? 'Обработка...' : 'Деактивировать'}
                       </button>
@@ -201,7 +201,7 @@ export default function ModeratorSpecialists() {
                       <button
                         onClick={() => handleSpecialistAction(specialist.id, 'ACTIVATE')}
                         disabled={isProcessing === specialist.id}
-                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                        className="inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 whitespace-nowrap"
                       >
                         {isProcessing === specialist.id ? 'Обработка...' : 'Активировать'}
                       </button>
@@ -210,7 +210,7 @@ export default function ModeratorSpecialists() {
                     <button
                       onClick={() => handleSpecialistAction(specialist.id, 'DELETE')}
                       disabled={isProcessing === specialist.id || (specialist.orders && specialist.orders.length > 0)}
-                      className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+                      className="inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 whitespace-nowrap"
                       title={specialist.orders && specialist.orders.length > 0 ? 'Нельзя удалить специалиста с активными заказами' : 'Удалить специалиста'}
                     >
                       {isProcessing === specialist.id ? 'Обработка...' : 'Удалить'}

@@ -9,7 +9,7 @@ interface ModeratorLayoutProps {
 }
 
 export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
-  const { user, status } = useAuth();
+  const { user, status, logout, isLoggingOut } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -46,10 +46,12 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
                 {user.firstName} {user.lastName}
               </span>
               <button
-                onClick={() => router.push('/')}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                onClick={logout}
+                disabled={isLoggingOut}
+                className="text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Выйти из системы"
               >
-                Выйти
+                {isLoggingOut ? 'Выход...' : 'Выйти'}
               </button>
             </div>
           </div>

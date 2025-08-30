@@ -48,6 +48,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 export function useAuth() {
   const [status, setStatus] = useState<AuthStatus>('loading');
   const [user, setUser] = useState<User | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -110,5 +111,35 @@ export function useAuth() {
     }
   }, [fetchUser, validateWithTelegram]);
 
-  return { status, user };
+  const logout = useCallback(async () => {
+    if (isLoggingOut) return; // Предотвращаем множественные клики
+    
+    setIsLoggingOut(true);
+    try {
+      const res = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (res.ok) {
+        // Очищаем состояние
+        setUser(null);
+        setStatus('error');
+        
+        // Перенаправляем на главную страницу
+        window.location.href = '/';
+      } else {
+        console.error('Logout failed');
+        setIsLoggingOut(false);
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Даже если запрос не удался, очищаем состояние и перенаправляем
+      setUser(null);
+      setStatus('error');
+      window.location.href = '/';
+    }
+  }, [isLoggingOut]);
+
+  return { status, user, logout, isLoggingOut };
 }
