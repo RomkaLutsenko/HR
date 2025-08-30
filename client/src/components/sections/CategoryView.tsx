@@ -206,13 +206,15 @@ export default function CategoryView() {
                   )}
 
                   {quantity === 0 ? (
-                    <button
-                      className="bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={() => handleAddToCart(service, specialist)}
-                      disabled={Boolean(selectedSpecialist && !specialist?.isAvailable)}
-                    >
-                      {selectedSpecialist && !specialist?.isAvailable ? 'Специалист занят' : 'Заказать услугу'}
-                    </button>
+                    <div className="flex justify-end">
+                      <button
+                        className="bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => handleAddToCart(service, specialist)}
+                        disabled={Boolean(selectedSpecialist && !specialist?.isAvailable)}
+                      >
+                        {selectedSpecialist && !specialist?.isAvailable ? 'Специалист занят' : 'Заказать услугу'}
+                      </button>
+                    </div>
                   ) : (
                     <div className="flex items-center space-x-4">
                       <button
