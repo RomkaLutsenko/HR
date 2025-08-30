@@ -35,15 +35,19 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4">
-      <div className="max-w-md mx-auto">
+      <div className={`mx-auto ${sections.length <= 2 ? 'max-w-xs' : 'max-w-md'}`}>
         <div className="glass rounded-2xl border border-white/20 shadow-large backdrop-blur-xl">
-          <div className="flex justify-between items-center">
+          <div className={`flex items-center ${sections.length <= 2 ? 'justify-center space-x-2' : 'justify-between'}`}>
             {sections.map((item) => {
               const isActive = pathname === item.path;
               return (
                 <div
                   key={item.id}
-                  className={`relative flex flex-col items-center py-2 px-2 sm:px-3 md:px-4 rounded-2xl cursor-pointer transition-all duration-300 flex-1 min-w-0 ${
+                  className={`relative flex flex-col items-center py-2 px-2 sm:px-3 md:px-4 rounded-2xl cursor-pointer transition-all duration-300 ${
+                    sections.length <= 2 
+                      ? 'w-24 sm:w-28 md:w-32' 
+                      : 'flex-1 min-w-0'
+                  } ${
                     isActive
                       ? 'text-primary-600 bg-white/80 shadow-medium scale-105'
                       : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
