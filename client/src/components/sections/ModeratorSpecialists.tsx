@@ -2,6 +2,7 @@
 
 import { Specialist } from '@/types/types';
 import { api } from '@/utils/api';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function ModeratorSpecialists() {
@@ -158,10 +159,12 @@ export default function ModeratorSpecialists() {
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
                       {specialist.avatar ? (
-                        <img
+                        <Image
                           className="h-12 w-12 rounded-full"
                           src={specialist.avatar}
                           alt={specialist.name}
+                          width={48}
+                          height={48}
                         />
                       ) : (
                         <div className="h-12 w-12 bg-gray-300 rounded-full flex items-center justify-center">

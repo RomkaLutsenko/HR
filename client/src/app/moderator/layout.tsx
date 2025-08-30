@@ -9,16 +9,16 @@ interface ModeratorLayoutProps {
 }
 
 export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
-  const { user, isLoading } = useAuth();
+  const { user, status } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && (!user || user.role !== 'MODERATOR')) {
+    if (status !== 'loading' && (!user || user.role !== 'MODERATOR')) {
       router.push('/');
     }
-  }, [user, isLoading, router]);
+  }, [user, status, router]);
 
-  if (isLoading) {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
