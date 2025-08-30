@@ -1,7 +1,8 @@
 'use client';
 
 import { Review, Service } from '@/types/types';
-import { useState } from 'react';
+import { api } from '@/utils/api';
+import { useEffect, useState } from 'react';
 
 interface ReviewsProps {
   service?: Service;
@@ -12,55 +13,28 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
   const [showAddReview, setShowAddReview] = useState(false);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Моковые отзывы для демонстрации
-  const reviews: Review[] = [
-    {
-      id: 1,
-      userId: 1,
-      serviceId: 1,
-      rating: 5,
-      comment: "Отличный сервис! Специалист пришел вовремя, работа выполнена качественно. Рекомендую!",
-      createdAt: "2025-01-15T10:30:00Z",
-      userName: "Анна К."
-    },
-    {
-      id: 2,
-      userId: 2,
-      serviceId: 1,
-      rating: 4,
-      comment: "Хорошая работа, но немного задержались с началом. В целом доволен результатом.",
-      createdAt: "2025-01-14T15:45:00Z",
-      userName: "Михаил С."
-    },
-    {
-      id: 3,
-      userId: 3,
-      serviceId: 2,
-      rating: 5,
-      comment: "Профессиональный подход, аккуратная работа. Буду обращаться еще!",
-      createdAt: "2025-01-13T09:20:00Z",
-      userName: "Елена В."
-    },
-    {
-      id: 4,
-      userId: 4,
-      serviceId: 2,
-      rating: 5,
-      comment: "Очень доволен качеством работы. Специалист знает свое дело!",
-      createdAt: "2025-01-12T14:20:00Z",
-      userName: "Дмитрий П."
-    },
-    {
-      id: 5,
-      userId: 5,
-      serviceId: 3,
-      rating: 4,
-      comment: "Хороший сервис, но можно было бы быстрее. В целом рекомендую.",
-      createdAt: "2025-01-11T11:15:00Z",
-      userName: "Ольга М."
-    }
-  ];
+  useEffect(() => {
+    const loadReviews = async () => {
+      if (!service) return;
+      
+      try {
+        const reviewsData = await api.getReviews({ 
+          serviceId: service.id,
+          limit: 10 
+        });
+        setReviews(reviewsData);
+      } catch (error) {
+        console.error('Error loading reviews:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadReviews();
+  }, [service]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
@@ -74,12 +48,30 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
     return '⭐'.repeat(rating) + '☆'.repeat(5 - rating);
   };
 
-  const handleSubmitReview = () => {
-    // Здесь будет логика отправки отзыва
-    console.log('Отзыв:', { rating, comment });
-    setShowAddReview(false);
-    setRating(5);
-    setComment('');
+  const handleSubmitReview = async () => {
+    if (!service) return;
+    
+    try {
+      await api.createReview({
+        userId: 1, // TODO: получить из контекста пользователя
+        serviceId: service.id,
+        rating,
+        comment
+      });
+      
+      // Перезагружаем отзывы
+      const reviewsData = await api.getReviews({ 
+        serviceId: service.id,
+        limit: 10 
+      });
+      setReviews(reviewsData);
+      
+      setShowAddReview(false);
+      setRating(5);
+      setComment('');
+    } catch (error) {
+      console.error('Error creating review:', error);
+    }
   };
 
   // Если это модальное окно (с service и onClose)
@@ -115,7 +107,17 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
 
           {/* Reviews List */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {reviews.filter(review => review.serviceId === service.id).map((review) => (
+            {loading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+                <p className="mt-2 text-gray-600">Загрузка отзывов...</p>
+              </div>
+            ) : reviews.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Пока нет отзывов</p>
+              </div>
+            ) : (
+              reviews.map((review) => (
               <div key={review.id} className="border-b border-gray-100 pb-4 last:border-b-0">
                 <div className="flex items-start space-x-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
@@ -131,7 +133,8 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+            )}
           </div>
 
           {/* Add Review Button */}

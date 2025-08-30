@@ -3,9 +3,9 @@
 import { addToCart, decreaseQuantity } from '@/store/slices/cartSlice';
 import { RootState } from '@/store/store';
 import { Service, Specialist } from '@/types/types';
-import { getServicesByCategory, getSpecialistsByCategory } from '@/utils/data/services';
+import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Reviews from './Reviews';
 
@@ -17,9 +17,41 @@ export default function CategoryView() {
   const [selectedSpecialist, setSelectedSpecialist] = useState<number | null>(null);
   const [showReviews, setShowReviews] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [specialists, setSpecialists] = useState<Specialist[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const services = getServicesByCategory(currentCategory);
-  const specialists = getSpecialistsByCategory(currentCategory);
+  useEffect(() => {
+    const loadData = async () => {
+      if (!currentCategory) return;
+      
+      try {
+        const [servicesData, specialistsData] = await Promise.all([
+          api.getServicesByCategory(currentCategory),
+          api.getSpecialistsByCategory(currentCategory)
+        ]);
+        setServices(servicesData);
+        setSpecialists(specialistsData);
+      } catch (error) {
+        console.error('Error loading category data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [currentCategory]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleShowMainMenu = () => {
     router.push('/customer');

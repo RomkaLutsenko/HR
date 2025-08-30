@@ -2,9 +2,11 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { setCurrentCategory } from '@/store/slices/uiSlice';
+import { Service, ServiceCategory } from '@/types/types';
+import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getPopularServices, serviceCategories } from '../../utils/data/services';
 import SearchBar from '../SearchBar';
 import SpecialOffers from '../SpecialOffers';
 
@@ -12,12 +14,44 @@ export default function MainMenu() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useAuth();
-  const popularServices = getPopularServices();
+  const [popularServices, setPopularServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [services, cats] = await Promise.all([
+          api.getPopularServices(6),
+          api.getCategories()
+        ]);
+        setPopularServices(services);
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const handleShowCategory = (category: string) => {
     dispatch(setCurrentCategory(category));
     router.push('/customer/category');
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
 
   const vibrate = () => {
     if (navigator.vibrate) {
@@ -45,7 +79,7 @@ export default function MainMenu() {
               key={service.id}
               className="glass rounded-2xl p-5 border border-white/20 hover:border-primary-300/30 hover:shadow-medium transition-all duration-300 cursor-pointer hover-lift group"
                               onClick={() => {
-                  dispatch(setCurrentCategory(service.category));
+                  dispatch(setCurrentCategory(service.category?.name || ''));
                   router.push('/customer/category');
                   vibrate();
                 }}
@@ -101,7 +135,7 @@ export default function MainMenu() {
         </div>
         
         <div className="grid grid-cols-2 gap-4">
-          {serviceCategories.map((category, index) => (
+          {categories.map((category, index) => (
             <div
               key={category.id}
               className="glass rounded-2xl p-5 text-center border border-white/20 hover:border-secondary-300/30 hover:shadow-medium transition-all duration-300 cursor-pointer hover-lift group"

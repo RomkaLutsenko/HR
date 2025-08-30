@@ -60,6 +60,9 @@ export interface Specialist {
   categories: string[];
   hourlyRate: number;
   isAvailable: boolean;
+  services?: Service[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Service {
@@ -68,12 +71,15 @@ export interface Service {
   description: string;
   price: number;
   duration: number; // в минутах
-  category: string;
-  specialists: Specialist[];
+  categoryId: number;
+  category?: ServiceCategory;
+  specialists?: Specialist[];
   rating: number;
   reviewCount: number;
   isPopular: boolean;
   image?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Review {
@@ -99,6 +105,7 @@ export interface Order {
   userId: number;
   serviceId: number;
   specialistId?: number;
+  statusId: number;
   status: OrderStatus;
   totalPrice: number;
   scheduledDate?: string;
@@ -107,6 +114,7 @@ export interface Order {
   updatedAt: string;
   service: Service;
   specialist?: Specialist;
+  user?: User;
 }
 
 export interface ServiceCategory {
@@ -115,4 +123,7 @@ export interface ServiceCategory {
   icon: string;
   description: string;
   color: string;
+  services?: Service[];
+  createdAt?: string;
+  updatedAt?: string;
 }
