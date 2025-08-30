@@ -16,7 +16,7 @@ model User {
   updatedAt     DateTime? @updatedAt
   refreshToken  String?
   isAdmin       Boolean  @default(false)
-  role          UserRole @default(CUSTOMER)
+  role          UserRole?
   
   // Relations
   orders        Order[]

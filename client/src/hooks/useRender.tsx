@@ -9,6 +9,7 @@ import Offers from '@/components/sections/Offers';
 import Profile from '@/components/sections/Profile';
 import Purchased from '@/components/sections/Purchased';
 import Reviews from '@/components/sections/Reviews';
+import SpecialistDashboard from '@/components/sections/SpecialistDashboard';
 import { ReactElement } from 'react';
 
 export function useRender(): ReactElement | null {
@@ -31,6 +32,8 @@ export function useRender(): ReactElement | null {
       return <AdminPanel />;
     case 'profile':
       return <Profile />;
+    case 'specialistDashboard':
+      return <SpecialistDashboard />;
     default:
       return null;
   }

@@ -3,8 +3,9 @@ import { setActiveSection } from '@/store/slices/uiSlice';
 import { RootState } from '@/store/store';
 import { UiSection } from '@/types/ui';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuth } from '@/hooks/useAuth';
 
-const sections: { id: UiSection; icon: string; label: string }[] = [
+const customerSections: { id: UiSection; icon: string; label: string }[] = [
   { id: 'mainMenu', icon: '🏠', label: 'Главная' },
   { id: 'offers', icon: '🎯', label: 'Акции' },
   { id: 'purchased', icon: 'ℹ️', label: 'Покупки' },
@@ -12,10 +13,18 @@ const sections: { id: UiSection; icon: string; label: string }[] = [
   { id: 'profile', icon: '👤', label: 'Профиль' },
 ];
 
+const specialistSections: { id: UiSection; icon: string; label: string }[] = [
+  { id: 'specialistDashboard', icon: '🛠️', label: 'Работа' },
+  { id: 'profile', icon: '👤', label: 'Профиль' },
+];
+
 export default function BottomNav() {
   const { activeSection } = useSelector((state: RootState) => state.ui);
+  const { user } = useAuth();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const sections = user?.role === 'SPECIALIST' ? specialistSections : customerSections;
 
   const navItems = sections.map((section) => ({
     ...section,

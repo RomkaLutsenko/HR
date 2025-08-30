@@ -39,7 +39,7 @@ export interface User {
   updatedAt: string;
   isAuthenticated: boolean;
   isAdmin?: boolean;
-  role: UserRole;
+  role: UserRole | null;
 }
 
 export interface JwtPayload {

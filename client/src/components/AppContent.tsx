@@ -4,9 +4,13 @@ import { useAuth } from '../hooks/useAuth';
 import BottomNav from './BottomNav';
 import Header from './Header';
 import Main from './Main';
+import { RoleSelection } from './RoleSelection';
+import { useState } from 'react';
+import { UserRole } from '@/types/types';
 
 export function AppContent() {
-  const { status } = useAuth();
+  const { status, user } = useAuth();
+  const [isUpdatingRole, setIsUpdatingRole] = useState(false);
 
   if (status === 'loading') {
     return (
@@ -35,6 +39,34 @@ export function AppContent() {
         </div>
       </div>
     );
+  }
+
+  // Если роль не выбрана, показываем выбор роли
+  if (status === 'ok' && !user?.role) {
+    const handleRoleSelect = async (role: UserRole) => {
+      setIsUpdatingRole(true);
+      try {
+        const response = await fetch('/api/auth/update-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role }),
+        });
+
+        if (response.ok) {
+          // Перезагружаем страницу для обновления данных пользователя
+          window.location.reload();
+        } else {
+          alert('Ошибка при сохранении роли');
+        }
+      } catch (error) {
+        console.error('Error updating role:', error);
+        alert('Ошибка при сохранении роли');
+      } finally {
+        setIsUpdatingRole(false);
+      }
+    };
+
+    return <RoleSelection onRoleSelect={handleRoleSelect} isLoading={isUpdatingRole} />;
   }
 
   return (

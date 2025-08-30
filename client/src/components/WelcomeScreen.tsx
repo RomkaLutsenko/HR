@@ -1,6 +1,6 @@
 'use client';
 
-export const WelcomeScreen = () => {
+export const RedirectScreen = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       {/* Фоновые декоративные элементы */}

@@ -6,4 +6,5 @@ export type UiSection =
   | 'category'
   | 'purchased'
   | 'adminPanel'
-  | 'profile';
+  | 'profile'
+  | 'specialistDashboard';

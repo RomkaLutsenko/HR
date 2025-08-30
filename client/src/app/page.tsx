@@ -1,7 +1,7 @@
 'use client';
 
 import { AppContent } from '@/components/AppContent';
-import { WelcomeScreen } from '@/components/WelcomeScreen';
+import { RedirectScreen } from '@/components/WelcomeScreen';
 import { useWebApp } from '@/hooks/useWebApp';
 
 export default function Home() {
@@ -9,5 +9,5 @@ export default function Home() {
 
   if (isTgWebApp === null) return null;
 
-  return isTgWebApp ? <AppContent /> : <WelcomeScreen />;
+  return isTgWebApp ? <AppContent /> : <RedirectScreen />;
 }
