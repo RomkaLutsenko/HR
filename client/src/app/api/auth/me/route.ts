@@ -37,11 +37,8 @@ export async function GET(req: NextRequest) {
 
     let decoded: JwtPayload;
     try {
-      console.log('ME: Verifying token:', token);
       decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-      console.log('ME: Decoded payload:', decoded);
-    } catch (error) {
-      console.error('ME: Token verification failed:', error);
+    } catch {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 

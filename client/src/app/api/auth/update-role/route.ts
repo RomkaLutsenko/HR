@@ -6,21 +6,15 @@ export async function POST(request: NextRequest) {
   try {
     // Получаем токен из куки
     const token = request.cookies.get('accessToken')?.value;
-    console.log('Token from cookie:', token ? 'exists' : 'missing');
     
     if (!token) {
-      console.log('No access token found in cookies');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    console.log('Token length:', token.length);
     
     // Верифицируем JWT токен
     const payload = await verifyJWT(token);
-    console.log('Payload:', payload);
     
     if (!payload) {
-      console.log('Invalid token payload');
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 

@@ -17,25 +17,20 @@ export default function Profile() {
     try {
       const newRole = user.role === 'CUSTOMER' ? 'SPECIALIST' : 'CUSTOMER';
       
-      console.log('Updating role to:', newRole);
-      
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ role: newRole }),
-        credentials: 'include', // Важно! Это отправляет куки с запросом
+        credentials: 'include',
       });
-
-      console.log('Response status:', response.status);
       
       if (response.ok) {
         // Обновляем страницу для применения изменений
         window.location.reload();
       } else {
-        const errorData = await response.text();
-        console.error('Failed to update role:', errorData);
+        console.error('Failed to update role');
       }
     } catch (error) {
       console.error('Error updating role:', error);

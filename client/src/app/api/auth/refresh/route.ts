@@ -37,14 +37,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Создаем новый accessToken
-    const tokenPayload = { userId: user.id, telegramId: user.telegramId };
-    console.log('Refresh: Creating token with payload:', tokenPayload);
-    
-    const accessToken = jwt.sign(tokenPayload, JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.id, telegramId: user.telegramId }, JWT_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
-    
-    console.log('Refresh: Created access token:', accessToken);
 
     // Создаем новый refreshToken
     const newRefreshToken = jwt.sign({ userId: user.id, telegramId: user.telegramId, type: 'refresh' }, JWT_SECRET, {
