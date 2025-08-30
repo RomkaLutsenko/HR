@@ -125,9 +125,6 @@ export default function Purchased() {
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center shadow-glow">
-                <span className="text-white text-lg font-semibold">{item.service.name.charAt(0)}</span>
-              </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-semibold text-neutral-800">{item.service.name}</h3>
