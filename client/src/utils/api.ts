@@ -32,6 +32,8 @@ interface OrderStatusesResponse extends ApiResponse<OrderStatus[]> {
   orderStatuses: OrderStatus[];
 }
 
+
+
 // Функции для работы с API
 export const api = {
   // Категории услуг
@@ -190,12 +192,12 @@ export const api = {
   },
 
   // Модератор API
-  async getModeratorApplications(): Promise<any> {
+  async getModeratorApplications(): Promise<{ success: boolean; dashboard: unknown }> {
     const response = await fetch(`${API_BASE}/moderator/applications`);
     return response.json();
   },
 
-  async processApplication(applicationId: number, action: 'APPROVE' | 'REJECT', comment?: string): Promise<any> {
+  async processApplication(applicationId: number, action: 'APPROVE' | 'REJECT', comment?: string): Promise<{ success: boolean; application?: unknown; message: string }> {
     const response = await fetch(`${API_BASE}/moderator/applications`, {
       method: 'POST',
       headers: {
@@ -206,12 +208,12 @@ export const api = {
     return response.json();
   },
 
-  async getModeratorSpecialists(): Promise<any> {
+  async getModeratorSpecialists(): Promise<{ success: boolean; specialists: Specialist[] }> {
     const response = await fetch(`${API_BASE}/moderator/specialists`);
     return response.json();
   },
 
-  async manageSpecialist(specialistId: number, action: 'ACTIVATE' | 'DEACTIVATE' | 'DELETE'): Promise<any> {
+  async manageSpecialist(specialistId: number, action: 'ACTIVATE' | 'DEACTIVATE' | 'DELETE'): Promise<{ success: boolean; specialist?: Specialist; message: string }> {
     const response = await fetch(`${API_BASE}/moderator/specialists`, {
       method: 'POST',
       headers: {
