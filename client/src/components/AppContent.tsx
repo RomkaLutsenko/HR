@@ -52,11 +52,6 @@ export function AppContent() {
         <Main />
         <BottomNav />
       </div>
-
-      {/* Индикатор состояния */}
-      <div className="fixed top-4 right-4 z-50">
-        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg"></div>
-      </div>
     </div>
   );
 }
