@@ -1,35 +1,26 @@
+'use client';
 
-import { setActiveSection } from '@/store/slices/uiSlice';
-import { RootState } from '@/store/store';
-import { UiSection } from '@/types/ui';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '@/hooks/useAuth';
+import { usePathname, useRouter } from 'next/navigation';
 
-const customerSections: { id: UiSection; icon: string; label: string }[] = [
-  { id: 'mainMenu', icon: '🏠', label: 'Главная' },
-  { id: 'offers', icon: '🎯', label: 'Акции' },
-  { id: 'purchased', icon: 'ℹ️', label: 'Покупки' },
-  { id: 'reviews', icon: '⭐', label: 'Отзывы' },
-  { id: 'profile', icon: '👤', label: 'Профиль' },
+const customerSections: { id: string; icon: string; label: string; path: string }[] = [
+  { id: 'mainMenu', icon: '🏠', label: 'Главная', path: '/' },
+  { id: 'offers', icon: '🎯', label: 'Акции', path: '/offers' },
+  { id: 'purchased', icon: 'ℹ️', label: 'Покупки', path: '/purchased' },
+  { id: 'profile', icon: '👤', label: 'Профиль', path: '/profile' },
 ];
 
-const specialistSections: { id: UiSection; icon: string; label: string }[] = [
-  { id: 'specialistDashboard', icon: '🛠️', label: 'Работа' },
-  { id: 'profile', icon: '👤', label: 'Профиль' },
+const specialistSections: { id: string; icon: string; label: string; path: string }[] = [
+  { id: 'specialistDashboard', icon: '🛠️', label: 'Работа', path: '/specialist' },
+  { id: 'profile', icon: '👤', label: 'Профиль', path: '/specialist/profile' },
 ];
 
 export default function BottomNav() {
-  const { activeSection } = useSelector((state: RootState) => state.ui);
   const { user } = useAuth();
-
-  const dispatch = useDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const sections = user?.role === 'SPECIALIST' ? specialistSections : customerSections;
-
-  const navItems = sections.map((section) => ({
-    ...section,
-    action: () => dispatch(setActiveSection(section.id)),
-  }));
 
   const vibrate = () => {
     if (navigator.vibrate) {
@@ -37,12 +28,17 @@ export default function BottomNav() {
     }
   };
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    vibrate();
+  };
+
   return (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 max-w-sm w-full z-50 px-1 h-17">
       <div className="glass rounded-3xl border border-white/20 shadow-large backdrop-blur-xl">
         <div className="flex justify-around items-center">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.id;
+          {sections.map((item) => {
+            const isActive = pathname === item.path;
             return (
               <div
                 key={item.id}
@@ -51,10 +47,7 @@ export default function BottomNav() {
                     ? 'text-primary-600 bg-white/80 shadow-medium scale-105'
                     : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
                 }`}
-                onClick={() => {
-                  item.action();
-                  vibrate();
-                }}
+                onClick={() => handleNavigation(item.path)}
               >
                 {/* Активный индикатор */}
                 {isActive && (

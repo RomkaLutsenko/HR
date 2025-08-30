@@ -1,16 +1,17 @@
 'use client';
 
 import { addToCart, decreaseQuantity } from '@/store/slices/cartSlice';
-import { setActiveSection } from '@/store/slices/uiSlice';
 import { RootState } from '@/store/store';
 import { Service, Specialist } from '@/types/types';
 import { getServicesByCategory, getSpecialistsByCategory } from '@/utils/data/services';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Reviews from './Reviews';
 
 export default function CategoryView() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { currentCategory } = useSelector((state: RootState) => state.ui);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [selectedSpecialist, setSelectedSpecialist] = useState<number | null>(null);
@@ -21,7 +22,7 @@ export default function CategoryView() {
   const specialists = getSpecialistsByCategory(currentCategory);
 
   const handleShowMainMenu = () => {
-    dispatch(setActiveSection('mainMenu'));
+    router.push('/');
   };
 
   const vibrate = () => {
@@ -193,16 +194,16 @@ export default function CategoryView() {
                   </div>
 
                   {selectedSpecialist && specialist && (
-                                          <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-3 mb-4 border border-primary-100">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-semibold">{specialist.name.charAt(0)}</span>
-                          </div>
-                          <span className="text-sm font-semibold text-primary-800">
-                            {specialist.name} • {specialist.hourlyRate} ₽/час
-                          </span>
+                    <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-3 mb-4 border border-primary-100">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                          <span className="text-white text-xs font-semibold">{specialist.name.charAt(0)}</span>
                         </div>
+                        <span className="text-sm font-semibold text-primary-800">
+                          {specialist.name} • {specialist.hourlyRate} ₽/час
+                        </span>
                       </div>
+                    </div>
                   )}
 
                   {quantity === 0 ? (

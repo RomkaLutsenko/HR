@@ -1,12 +1,11 @@
-import { setActiveSection } from '@/store/slices/uiSlice';
-import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 export default function SpecialOffers() {
-  const dispatch = useDispatch()
+  const router = useRouter();
 
   const handleOffers = () => {
-    dispatch(setActiveSection("offers"))
-  }
+    router.push('/offers');
+  };
 
   const vibrate = () => {
     if (navigator.vibrate) {

@@ -1,10 +1,2 @@
-export type UiSection =
-  | 'mainMenu'
-  | 'cart'
-  | 'offers'
-  | 'reviews'
-  | 'category'
-  | 'purchased'
-  | 'adminPanel'
-  | 'profile'
-  | 'specialistDashboard';
+// Типы для UI состояния
+// activeSection больше не используется, так как навигация происходит через URL

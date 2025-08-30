@@ -1,17 +1,17 @@
 'use client';
 
-import { setActiveSection } from '@/store/slices/uiSlice';
 import { RootState } from '@/store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
 export default function CartButton() {
-  const dispatch = useDispatch();
+  const router = useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCart = () => {
-    dispatch(setActiveSection('cart'));
+    router.push('/cart');
   };
 
   const vibrate = () => {

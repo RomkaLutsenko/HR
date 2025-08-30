@@ -1,5 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
-import { setActiveSection, setCurrentCategory } from '@/store/slices/uiSlice';
+import { setCurrentCategory } from '@/store/slices/uiSlice';
+import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { getPopularServices, serviceCategories } from '../../utils/data/services';
 import SearchBar from '../SearchBar';
@@ -7,11 +8,13 @@ import SpecialOffers from '../SpecialOffers';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user } = useAuth();
   const popularServices = getPopularServices();
 
   const handleShowCategory = (category: string) => {
     dispatch(setCurrentCategory(category));
+    router.push('/category');
   };
 
   const vibrate = () => {
@@ -41,6 +44,7 @@ export default function MainMenu() {
               className="glass rounded-2xl p-5 border border-white/20 hover:border-primary-300/30 hover:shadow-medium transition-all duration-300 cursor-pointer hover-lift group"
               onClick={() => {
                 dispatch(setCurrentCategory(service.category));
+                router.push('/category');
                 vibrate();
               }}
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -124,7 +128,7 @@ export default function MainMenu() {
         <div className="px-6">
           <button
             onClick={() => {
-              dispatch(setActiveSection('adminPanel'));
+              router.push('/admin');
               vibrate();
             }}
             className="w-full bg-gradient-to-r from-neutral-800 to-neutral-900 hover:from-neutral-900 hover:to-black text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-soft hover:shadow-medium hover-lift group"

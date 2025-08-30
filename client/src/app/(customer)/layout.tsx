@@ -1,16 +1,24 @@
 'use client';
 
-import { useAuth } from '../hooks/useAuth';
-import BottomNav from './BottomNav';
-import Header from './Header';
-import Main from './Main';
-import { RoleSelection } from './RoleSelection';
-import { useState } from 'react';
-import { UserRole } from '@/types/types';
+import BottomNav from '@/components/BottomNav';
+import Header from '@/components/Header';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-export function AppContent() {
+export default function CustomerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { status, user } = useAuth();
-  const [isUpdatingRole, setIsUpdatingRole] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'ok' && user?.role === 'SPECIALIST') {
+      router.push('/specialist');
+    }
+  }, [status, user, router]);
 
   if (status === 'loading') {
     return (
@@ -41,34 +49,6 @@ export function AppContent() {
     );
   }
 
-  // Если роль не выбрана, показываем выбор роли
-  if (status === 'ok' && !user?.role) {
-    const handleRoleSelect = async (role: UserRole) => {
-      setIsUpdatingRole(true);
-      try {
-        const response = await fetch('/api/auth/update-role', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ role }),
-        });
-
-        if (response.ok) {
-          // Перезагружаем страницу для обновления данных пользователя
-          window.location.reload();
-        } else {
-          alert('Ошибка при сохранении роли');
-        }
-      } catch (error) {
-        console.error('Error updating role:', error);
-        alert('Ошибка при сохранении роли');
-      } finally {
-        setIsUpdatingRole(false);
-      }
-    };
-
-    return <RoleSelection onRoleSelect={handleRoleSelect} isLoading={isUpdatingRole} />;
-  }
-
   return (
     <div className="max-w-md mx-auto min-h-screen relative overflow-hidden bg-gradient-to-br from-primary-50 to-secondary-50">
       {/* Фоновые декоративные элементы */}
@@ -81,7 +61,9 @@ export function AppContent() {
       {/* Основной контент */}
       <div className="relative z-10">
         <Header />
-        <Main />
+        <div className="pb-24">
+          {children}
+        </div>
         <BottomNav />
       </div>
     </div>
