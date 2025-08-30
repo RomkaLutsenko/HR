@@ -48,7 +48,7 @@ export default function Purchased() {
         hourlyRate: 2500,
         isAvailable: true
       },
-      orderDate: '2024-01-15',
+      orderDate: '2025-01-15',
       totalPrice: 5000,
       status: 'completed',
       hasReview: false
@@ -68,7 +68,7 @@ export default function Purchased() {
         isPopular: false,
         image: '⚖️'
       },
-      orderDate: '2024-01-10',
+      orderDate: '2025-01-10',
       totalPrice: 3000,
       status: 'completed',
       hasReview: true

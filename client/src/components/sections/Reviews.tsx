@@ -21,7 +21,7 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
       serviceId: 1,
       rating: 5,
       comment: "Отличный сервис! Специалист пришел вовремя, работа выполнена качественно. Рекомендую!",
-      createdAt: "2024-01-15T10:30:00Z",
+      createdAt: "2025-01-15T10:30:00Z",
       userName: "Анна К."
     },
     {
@@ -30,7 +30,7 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
       serviceId: 1,
       rating: 4,
       comment: "Хорошая работа, но немного задержались с началом. В целом доволен результатом.",
-      createdAt: "2024-01-14T15:45:00Z",
+      createdAt: "2025-01-14T15:45:00Z",
       userName: "Михаил С."
     },
     {
@@ -39,7 +39,7 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
       serviceId: 2,
       rating: 5,
       comment: "Профессиональный подход, аккуратная работа. Буду обращаться еще!",
-      createdAt: "2024-01-13T09:20:00Z",
+      createdAt: "2025-01-13T09:20:00Z",
       userName: "Елена В."
     },
     {
@@ -48,7 +48,7 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
       serviceId: 2,
       rating: 5,
       comment: "Очень доволен качеством работы. Специалист знает свое дело!",
-      createdAt: "2024-01-12T14:20:00Z",
+      createdAt: "2025-01-12T14:20:00Z",
       userName: "Дмитрий П."
     },
     {
@@ -57,7 +57,7 @@ export default function Reviews({ service, onClose }: ReviewsProps) {
       serviceId: 3,
       rating: 4,
       comment: "Хороший сервис, но можно было бы быстрее. В целом рекомендую.",
-      createdAt: "2024-01-11T11:15:00Z",
+      createdAt: "2025-01-11T11:15:00Z",
       userName: "Ольга М."
     }
   ];

@@ -15,10 +15,10 @@ export default function AdminPanel() {
       specialistId: 1,
       status: { id: 1, name: 'Новый', color: '#3b82f6', description: 'Заказ создан' },
       totalPrice: 2500,
-      scheduledDate: '2024-01-20T10:00:00Z',
+      scheduledDate: '2025-01-20T10:00:00Z',
       notes: 'Нужно прийти к 10:00',
-      createdAt: '2024-01-15T14:30:00Z',
-      updatedAt: '2024-01-15T14:30:00Z',
+      createdAt: '2025-01-15T14:30:00Z',
+      updatedAt: '2025-01-15T14:30:00Z',
       service: {
         id: 1,
         name: 'Косметический ремонт',
