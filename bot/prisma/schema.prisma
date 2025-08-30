@@ -16,10 +16,16 @@ model User {
   updatedAt     DateTime? @updatedAt
   refreshToken  String?
   isAdmin       Boolean  @default(false)
+  role          UserRole @default(CUSTOMER)
   
   // Relations
   orders        Order[]
   reviews       Review[]
+}
+
+enum UserRole {
+  CUSTOMER
+  SPECIALIST
 }
 
 model ServiceCategory {

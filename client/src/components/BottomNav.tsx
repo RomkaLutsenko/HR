@@ -9,6 +9,7 @@ const sections: { id: UiSection; icon: string; label: string }[] = [
   { id: 'offers', icon: '🎯', label: 'Акции' },
   { id: 'purchased', icon: 'ℹ️', label: 'Покупки' },
   { id: 'reviews', icon: '⭐', label: 'Отзывы' },
+  { id: 'profile', icon: '👤', label: 'Профиль' },
 ];
 
 export default function BottomNav() {

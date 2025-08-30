@@ -51,8 +51,11 @@ export async function GET(req: NextRequest) {
         firstName: true,
         lastName: true,
         phoneNumber: true,
+        authDate: true,
         createdAt: true,
         updatedAt: true,
+        isAdmin: true,
+        role: true,
       },
     });
 

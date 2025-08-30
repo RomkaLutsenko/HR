@@ -6,6 +6,7 @@ import Cart from '@/components/sections/Cart';
 import CategoryView from '@/components/sections/CategoryView';
 import MainMenu from '@/components/sections/MainMenu';
 import Offers from '@/components/sections/Offers';
+import Profile from '@/components/sections/Profile';
 import Purchased from '@/components/sections/Purchased';
 import Reviews from '@/components/sections/Reviews';
 import { ReactElement } from 'react';
@@ -28,6 +29,8 @@ export function useRender(): ReactElement | null {
       return <Reviews />;
     case 'adminPanel':
       return <AdminPanel />;
+    case 'profile':
+      return <Profile />;
     default:
       return null;
   }

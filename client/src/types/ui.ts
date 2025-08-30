@@ -5,4 +5,5 @@ export type UiSection =
   | 'reviews'
   | 'category'
   | 'purchased'
-  | 'adminPanel';
+  | 'adminPanel'
+  | 'profile';

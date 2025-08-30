@@ -25,6 +25,8 @@ export interface TelegramUser {
   is_premium?: boolean;
 }
 
+export type UserRole = 'CUSTOMER' | 'SPECIALIST';
+
 export interface User {
   id: number;
   telegramId: string;
@@ -37,6 +39,7 @@ export interface User {
   updatedAt: string;
   isAuthenticated: boolean;
   isAdmin?: boolean;
+  role: UserRole;
 }
 
 export interface JwtPayload {
