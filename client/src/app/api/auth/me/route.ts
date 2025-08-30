@@ -55,6 +55,7 @@ export async function GET(req: NextRequest) {
         createdAt: true,
         updatedAt: true,
         isAdmin: true,
+        isModerator: true,
         role: true,
       },
     });
