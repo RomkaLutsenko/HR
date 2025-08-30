@@ -4,16 +4,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Получаем токен из заголовков
-    const authHeader = request.headers.get('authorization');
-    console.log('Auth header:', authHeader ? 'exists' : 'missing');
+    // Получаем токен из куки
+    const token = request.cookies.get('accessToken')?.value;
+    console.log('Token from cookie:', token ? 'exists' : 'missing');
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('No Bearer token found');
+    if (!token) {
+      console.log('No access token found in cookies');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const token = authHeader.substring(7);
     console.log('Token length:', token.length);
     
     // Верифицируем JWT токен

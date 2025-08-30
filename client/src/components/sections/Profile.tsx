@@ -4,12 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { UserRole } from '@/types/types';
 import { useState } from 'react';
 
-function getCookie(name: string): string | undefined {
-  if (typeof document === 'undefined') return undefined;
-  
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? decodeURIComponent(match[2]) : undefined;
-}
+
 
 export default function Profile() {
   const { user } = useAuth();
@@ -22,37 +17,15 @@ export default function Profile() {
     try {
       const newRole = user.role === 'CUSTOMER' ? 'SPECIALIST' : 'CUSTOMER';
       
-      // Получаем токен из cookie
-      const token = getCookie('accessToken');
-      console.log('Token:', token ? 'exists' : 'not found');
-      console.log('Token value:', token);
-      console.log('All cookies:', document.cookie);
-      
-      // Декодируем токен для проверки содержимого (без верификации подписи)
-      if (token) {
-        try {
-          const base64Url = token.split('.')[1];
-          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-          }).join(''));
-          console.log('Decoded token payload:', JSON.parse(jsonPayload));
-        } catch (error) {
-          console.error('Error decoding token:', error);
-        }
-      }
-
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      };
-      
-      console.log('Request headers:', headers);
+      console.log('Updating role to:', newRole);
       
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ role: newRole }),
+        credentials: 'include', // Важно! Это отправляет куки с запросом
       });
 
       console.log('Response status:', response.status);
