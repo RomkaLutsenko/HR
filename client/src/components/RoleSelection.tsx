@@ -75,6 +75,29 @@ export function RoleSelection({ onRoleSelect, isLoading = false }: RoleSelection
               </div>
             </div>
           </button>
+
+          {/* Модератор */}
+          <button
+            onClick={() => handleRoleSelect('MODERATOR')}
+            disabled={isLoading}
+            className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105 ${
+              selectedRole === 'MODERATOR'
+                ? 'border-white bg-white/20 text-white'
+                : 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/15'
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👨‍⚖️</span>
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-semibold mb-1">Модератор</h3>
+                <p className="text-white/70 text-sm">
+                  Управляйте заявками и специалистами
+                </p>
+              </div>
+            </div>
+          </button>
         </div>
 
         {/* Индикатор загрузки */}

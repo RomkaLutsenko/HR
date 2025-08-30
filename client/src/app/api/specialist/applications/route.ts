@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Получаем данные заявки из тела запроса
-    const { categoryId, title, description, price, duration } = await request.json();
+    const { name, avatar, experience, description, categories, hourlyRate } = await request.json();
 
     // Проверяем, что пользователь является специалистом
     const user = await prisma.user.findUnique({
@@ -31,36 +31,49 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User is not a specialist' }, { status: 403 });
     }
 
-    // Получаем специалиста
-    const specialist = await prisma.specialist.findUnique({
-      where: { id: payload.userId },
+    // Проверяем, нет ли уже активной заявки от этого пользователя
+    const existingApplication = await prisma.specialistApplication.findFirst({
+      where: {
+        userId: payload.userId,
+        status: 'PENDING'
+      }
     });
 
-    if (!specialist) {
-      return NextResponse.json({ error: 'Specialist profile not found' }, { status: 404 });
+    if (existingApplication) {
+      return NextResponse.json({ error: 'You already have a pending application' }, { status: 400 });
     }
 
-    // Создаем новую услугу
-    const service = await prisma.service.create({
+    // Создаем новую заявку
+    const application = await prisma.specialistApplication.create({
       data: {
-        name: title,
+        userId: payload.userId,
+        name,
+        avatar,
+        experience,
         description,
-        price: parseFloat(price),
-        duration: parseInt(duration),
-        categoryId: parseInt(categoryId),
-        specialists: {
-          connect: { id: specialist.id }
-        }
+        categories,
+        hourlyRate: parseFloat(hourlyRate),
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            telegramId: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          }
+        }
+      }
     });
 
     return NextResponse.json({ 
       success: true, 
-      service 
+      application 
     });
 
   } catch (error) {
-    console.error('Error creating service application:', error);
+    console.error('Error creating specialist application:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -81,28 +94,89 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    // Получаем услуги специалиста
-    const services = await prisma.service.findMany({
-      where: {
-        specialists: {
-          some: {
-            id: payload.userId
-          }
-        }
-      },
-      include: {
-        category: true,
-        reviews: true,
-      },
+    // Получаем пользователя для проверки роли
+    const user = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { role: true }
     });
 
-    return NextResponse.json({ 
-      success: true, 
-      services 
-    });
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // Если это специалист, показываем только его заявки
+    if (user.role === 'SPECIALIST') {
+      const applications = await prisma.specialistApplication.findMany({
+        where: {
+          userId: payload.userId
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              telegramId: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            }
+          },
+          moderator: {
+            select: {
+              id: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            }
+          }
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+
+      return NextResponse.json({ 
+        success: true, 
+        applications 
+      });
+    }
+
+    // Если это модератор, показываем все заявки
+    if (user.role === 'MODERATOR') {
+      const applications = await prisma.specialistApplication.findMany({
+        include: {
+          user: {
+            select: {
+              id: true,
+              telegramId: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            }
+          },
+          moderator: {
+            select: {
+              id: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            }
+          }
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+
+      return NextResponse.json({ 
+        success: true, 
+        applications 
+      });
+    }
+
+    return NextResponse.json({ error: 'Access denied' }, { status: 403 });
 
   } catch (error) {
-    console.error('Error fetching specialist services:', error);
+    console.error('Error fetching applications:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

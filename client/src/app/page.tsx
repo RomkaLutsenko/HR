@@ -21,6 +21,8 @@ export default function Home() {
     if (status === 'ok' && user?.role) {
       if (user.role === 'SPECIALIST') {
         router.push('/specialist');
+      } else if (user.role === 'MODERATOR') {
+        router.push('/moderator');
       } else {
         router.push('/customer');
       }

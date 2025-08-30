@@ -21,11 +21,14 @@ model User {
   // Relations
   orders        Order[]
   reviews       Review[]
+  applications  SpecialistApplication[] // Заявки, поданные пользователем
+  moderatedApplications SpecialistApplication[] @relation("ModeratorApplications") // Заявки, обработанные модератором
 }
 
 enum UserRole {
   CUSTOMER
   SPECIALIST
+  MODERATOR
 }
 
 model ServiceCategory {
@@ -127,6 +130,32 @@ model Review {
   user         User       @relation(fields: [userId], references: [id])
   service      Service    @relation(fields: [serviceId], references: [id])
   specialist   Specialist? @relation(fields: [specialistId], references: [id])
+}
+
+model SpecialistApplication {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  name        String
+  avatar      String?
+  experience  String
+  description String
+  categories  String[]  // JSON array
+  hourlyRate  Float
+  status      ApplicationStatus @default(PENDING)
+  moderatorId Int?      // ID модератора, который обработал заявку
+  moderatorComment String? // Комментарий модератора
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id])
+  moderator   User?     @relation("ModeratorApplications", fields: [moderatorId], references: [id])
+}
+
+enum ApplicationStatus {
+  PENDING     // Ожидает рассмотрения
+  APPROVED    // Одобрена
+  REJECTED    // Отклонена
 }
 
 generator client {

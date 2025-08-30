@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     // Получаем данные из тела запроса
     const { role } = await request.json();
     
-    if (!role || !['CUSTOMER', 'SPECIALIST'].includes(role)) {
+    if (!role || !['CUSTOMER', 'SPECIALIST', 'MODERATOR'].includes(role)) {
       return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
     }
 

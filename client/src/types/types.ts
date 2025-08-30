@@ -25,7 +25,7 @@ export interface TelegramUser {
   is_premium?: boolean;
 }
 
-export type UserRole = 'CUSTOMER' | 'SPECIALIST';
+export type UserRole = 'CUSTOMER' | 'SPECIALIST' | 'MODERATOR';
 
 export interface User {
   id: number;
@@ -126,4 +126,32 @@ export interface ServiceCategory {
   services?: Service[];
   createdAt?: string;
   updatedAt?: string;
+}
+
+// Новые типы для системы модерации
+export type ApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface SpecialistApplication {
+  id: number;
+  userId: number;
+  name: string;
+  avatar?: string;
+  experience: string;
+  description: string;
+  categories: string[];
+  hourlyRate: number;
+  status: ApplicationStatus;
+  moderatorId?: number;
+  moderatorComment?: string;
+  createdAt: string;
+  updatedAt: string;
+  user?: User;
+  moderator?: User;
+}
+
+export interface ModeratorDashboard {
+  pendingApplications: SpecialistApplication[];
+  approvedApplications: SpecialistApplication[];
+  rejectedApplications: SpecialistApplication[];
+  totalApplications: number;
 }

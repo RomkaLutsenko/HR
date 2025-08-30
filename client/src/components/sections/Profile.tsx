@@ -3,6 +3,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { UserRole } from '@/types/types';
 import { useState } from 'react';
+import SpecialistApplications from './SpecialistApplications';
 
 
 
@@ -15,7 +16,14 @@ export default function Profile() {
 
     setIsLoading(true);
     try {
-      const newRole = user.role === 'CUSTOMER' ? 'SPECIALIST' : 'CUSTOMER';
+      let newRole: UserRole;
+      if (user.role === 'CUSTOMER') {
+        newRole = 'SPECIALIST';
+      } else if (user.role === 'SPECIALIST') {
+        newRole = 'CUSTOMER';
+      } else {
+        newRole = 'CUSTOMER';
+      }
       
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
@@ -52,14 +60,18 @@ export default function Profile() {
 
   const getRoleLabel = (role: UserRole | null) => {
     if (!role) return 'Роль не выбрана';
-    return role === 'CUSTOMER' ? 'Заказчик' : 'Исполнитель';
+    if (role === 'CUSTOMER') return 'Заказчик';
+    if (role === 'SPECIALIST') return 'Исполнитель';
+    if (role === 'MODERATOR') return 'Модератор';
+    return 'Неизвестная роль';
   };
 
   const getRoleDescription = (role: UserRole | null) => {
     if (!role) return 'Выберите роль в настройках';
-    return role === 'CUSTOMER' 
-      ? 'Вы можете заказывать услуги у специалистов'
-      : 'Вы можете предоставлять услуги клиентам';
+    if (role === 'CUSTOMER') return 'Вы можете заказывать услуги у специалистов';
+    if (role === 'SPECIALIST') return 'Вы можете предоставлять услуги клиентам';
+    if (role === 'MODERATOR') return 'Вы можете управлять заявками и специалистами';
+    return 'Описание роли недоступно';
   };
 
   return (
@@ -147,10 +159,12 @@ export default function Profile() {
                 ? 'bg-neutral-100 text-neutral-800'
                 : user.role === 'CUSTOMER' 
                 ? 'bg-primary-100 text-primary-800' 
-                : 'bg-secondary-100 text-secondary-800'
+                : user.role === 'SPECIALIST'
+                ? 'bg-secondary-100 text-secondary-800'
+                : 'bg-purple-100 text-purple-800'
             }`}>
               <span className="mr-2">
-                {!user.role ? '❓' : user.role === 'CUSTOMER' ? '👤' : '🛠️'}
+                {!user.role ? '❓' : user.role === 'CUSTOMER' ? '👤' : user.role === 'SPECIALIST' ? '🛠️' : '👨‍⚖️'}
               </span>
               {getRoleLabel(user.role)}
             </div>
@@ -158,26 +172,38 @@ export default function Profile() {
           </div>
 
           {/* Кнопка переключения роли */}
-          <button
-            onClick={handleRoleToggle}
-            disabled={isLoading || !user.role}
-            className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
-              isLoading || !user.role
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
-            }`}
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Переключение...
-              </div>
-            ) : !user.role ? (
-              'Сначала выберите роль'
-            ) : (
-              `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
-            )}
-          </button>
+          {user.role !== 'MODERATOR' && (
+            <button
+              onClick={handleRoleToggle}
+              disabled={isLoading || !user.role}
+              className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+                isLoading || !user.role
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
+              }`}
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Переключение...
+                </div>
+              ) : !user.role ? (
+                'Сначала выберите роль'
+              ) : (
+                `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
+              )}
+            </button>
+          )}
+          
+          {/* Ссылка на панель модератора */}
+          {user.role === 'MODERATOR' && (
+            <button
+              onClick={() => window.location.href = '/moderator'}
+              className="color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-lg hover:scale-105 active:scale-95"
+            >
+              Перейти в панель модератора
+            </button>
+          )}
         </div>
 
         {/* Дополнительная информация */}
@@ -194,6 +220,13 @@ export default function Profile() {
             </div>
           </div>
         </div>
+
+        {/* Заявки специалиста */}
+        {user.role === 'SPECIALIST' && (
+          <div className="glass rounded-3xl p-6 border border-white/20 shadow-large">
+            <SpecialistApplications />
+          </div>
+        )}
 
         {/* Информация о приложении */}
         <div className="text-center text-neutral-500 text-sm">
