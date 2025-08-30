@@ -1,7 +1,6 @@
 'use client';
 import { Service } from '@/types/types';
 import { memo, useCallback, useState } from 'react';
-import QuickFilters from './QuickFilters';
 import SearchInput from './SearchInput';
 import { useSearch } from './useSearch';
 
@@ -48,9 +47,6 @@ const SearchBar = memo(({
           <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-2xl blur-sm animate-pulse-soft"></div>
         )}
       </div>
-      
-      {/* Quick filters */}
-      {searchTerm.length > 0 && <QuickFilters />}
     </div>
   );
 });
