@@ -99,9 +99,6 @@ export default function CategoryView() {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow-purple">
-                    <span className="text-white text-lg font-semibold">{specialist.name.charAt(0)}</span>
-                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold text-neutral-800 text-lg">{specialist.name}</h4>
