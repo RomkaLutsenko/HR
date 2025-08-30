@@ -64,7 +64,6 @@ export default function Profile() {
     if (!role) return 'Роль не выбрана';
     if (role === 'CUSTOMER') return 'Заказчик';
     if (role === 'SPECIALIST') return 'Исполнитель';
-    if (role === 'MODERATOR') return 'Модератор';
     return 'Неизвестная роль';
   };
 
@@ -72,7 +71,6 @@ export default function Profile() {
     if (!role) return 'Выберите роль в настройках';
     if (role === 'CUSTOMER') return 'Вы можете заказывать услуги у специалистов';
     if (role === 'SPECIALIST') return 'Вы можете предоставлять услуги клиентам';
-    if (role === 'MODERATOR') return 'Вы можете управлять заявками и специалистами';
     return 'Описание роли недоступно';
   };
 
@@ -149,6 +147,16 @@ export default function Profile() {
                 </span>
               </div>
             )}
+            
+            {/* Статус модератора */}
+            {user.isModerator && (
+              <div className="flex justify-between items-center py-2 border-b border-white/20">
+                <span className="text-neutral-600">Статус:</span>
+                <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+                  Модератор
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -161,12 +169,10 @@ export default function Profile() {
                 ? 'bg-neutral-100 text-neutral-800'
                 : user.role === 'CUSTOMER' 
                 ? 'bg-primary-100 text-primary-800' 
-                : user.role === 'SPECIALIST'
-                ? 'bg-secondary-100 text-secondary-800'
-                : 'bg-purple-100 text-purple-800'
+                : 'bg-secondary-100 text-secondary-800'
             }`}>
               <span className="mr-2">
-                {!user.role ? '❓' : user.role === 'CUSTOMER' ? '👤' : user.role === 'SPECIALIST' ? '🛠️' : '👨‍⚖️'}
+                {!user.role ? '❓' : user.role === 'CUSTOMER' ? '👤' : '🛠️'}
               </span>
               {getRoleLabel(user.role)}
             </div>
@@ -176,36 +182,36 @@ export default function Profile() {
           {/* Кнопки переключения роли */}
           <div className="space-y-3">
             {/* Кнопка переключения между Заказчиком и Исполнителем */}
-            {user.role !== 'MODERATOR' && (
-              <button
-                onClick={handleRoleToggle}
-                disabled={isLoading || !user.role}
-                className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
-                  isLoading || !user.role
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
-                }`}
-              >
-                {isLoading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Переключение...
-                  </div>
-                ) : !user.role ? (
-                  'Сначала выберите роль'
-                ) : (
-                  `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
-                )}
-              </button>
-            )}
+            <button
+              onClick={handleRoleToggle}
+              disabled={isLoading || !user.role}
+              className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+                isLoading || !user.role
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
+              }`}
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Переключение...
+                </div>
+              ) : !user.role ? (
+                'Сначала выберите роль'
+              ) : (
+                `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
+              )}
+            </button>
             
             {/* Кнопка перехода в панель модератора */}
-            <button
-              onClick={() => window.location.href = '/moderator'}
-              className="w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-lg hover:scale-105 active:scale-95 text-white"
-            >
-              Перейти в панель модератора
-            </button>
+            {user.isModerator && (
+              <button
+                onClick={() => window.location.href = '/moderator'}
+                className="w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-lg hover:scale-105 active:scale-95 text-white"
+              >
+                Перейти в панель модератора
+              </button>
+            )}
           </div>
         </div>
 

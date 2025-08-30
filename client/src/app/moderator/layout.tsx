@@ -13,7 +13,7 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'loading' && (!user || user.role !== 'MODERATOR')) {
+    if (status !== 'loading' && (!user || !user.isModerator)) {
       router.push('/');
     }
   }, [user, status, router]);
@@ -29,10 +29,6 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
     );
   }
 
-  if (!user || user.role !== 'MODERATOR') {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b">
@@ -43,7 +39,7 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </span>
               <button
                 onClick={() => router.push('/')}

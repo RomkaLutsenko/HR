@@ -16,6 +16,7 @@ model User {
   updatedAt     DateTime? @updatedAt
   refreshToken  String?
   isAdmin       Boolean  @default(false)
+  isModerator   Boolean  @default(false)
   role          UserRole?
   
   // Relations
