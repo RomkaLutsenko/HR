@@ -29,30 +29,54 @@ export default function BottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 px-5 left-1/2 transform -translate-x-1/2 max-w-md w-full bg-white border-gray-200 flex justify-around shadow-lg">
-      {navItems.map((item) => (
-        <div
-          key={item.id}
-          className={`flex flex-col items-center py-2 px-3 text-gray-500 text-xs cursor-pointer transition-all ${
-            activeSection === item.id
-              ? 'text-blue-600 bg-blue-50 rounded-lg p-1 shadow-md font-bold'
-              : 'hover:text-blue-500'
-          }`}
-          onClick={() => {
-            item.action();
-            vibrate();
-          }}
-        >
-          <div
-            className={`text-lg mb-1 transition-all ${
-              activeSection === item.id ? 'text-2xl' : ''
-            }`}
-          >
-            {item.icon}
-          </div>
-          <span>{item.label}</span>
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 max-w-md w-full z-50 px-4 pb-6">
+      <div className="glass rounded-3xl border border-white/20 shadow-large backdrop-blur-xl">
+        <div className="flex justify-around items-center py-3 px-2">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <div
+                key={item.id}
+                className={`relative flex flex-col items-center py-2 px-3 rounded-2xl cursor-pointer transition-all duration-300 ${
+                  isActive
+                    ? 'text-primary-600 bg-white/80 shadow-medium scale-105'
+                    : 'text-neutral-600 hover:text-primary-500 hover:bg-white/40'
+                }`}
+                onClick={() => {
+                  item.action();
+                  vibrate();
+                }}
+              >
+                {/* Активный индикатор */}
+                {isActive && (
+                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-500 rounded-full"></div>
+                )}
+                
+                <div
+                  className={`text-xl mb-1 transition-all duration-300 ${
+                    isActive ? 'scale-110' : 'group-hover:scale-105'
+                  }`}
+                >
+                  {item.icon}
+                </div>
+                <span className={`text-xs font-medium transition-colors ${
+                  isActive ? 'font-semibold' : ''
+                }`}>
+                  {item.label}
+                </span>
+                
+                {/* Эффект свечения для активного элемента */}
+                {isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-2xl blur-sm"></div>
+                )}
+              </div>
+            );
+          })}
         </div>
-      ))}
+      </div>
+      
+      {/* Индикатор безопасной зоны для iPhone */}
+      <div className="h-6"></div>
     </div>
   );
 }
