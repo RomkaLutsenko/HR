@@ -167,7 +167,7 @@ export default function Profile() {
             className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
               isLoading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white hover:shadow-lg hover:scale-105 active:scale-95'
+                : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
             }`}
           >
             {isLoading ? (
