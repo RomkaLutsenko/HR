@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
       success: true,
       user: {
         ...user,
-        telegramId: user.telegramId.toString(),
+        telegramId: user.telegramId.toString(), // Конвертируем BigInt в строку
         isAuthenticated: true,
       },
     });

@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
       success: true, 
       user: {
         ...updatedUser,
+        telegramId: updatedUser.telegramId.toString(), // Конвертируем BigInt в строку
         isAuthenticated: true,
       }
     });
