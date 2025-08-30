@@ -1,13 +1,12 @@
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 
-import About from '@/components/sections/About';
 import AdminPanel from '@/components/sections/AdminPanel';
 import Cart from '@/components/sections/Cart';
 import CategoryView from '@/components/sections/CategoryView';
-import DeliveryInfo from '@/components/sections/DeliveryInfo';
 import MainMenu from '@/components/sections/MainMenu';
 import Offers from '@/components/sections/Offers';
+import Purchased from '@/components/sections/Purchased';
 import Reviews from '@/components/sections/Reviews';
 import { ReactElement } from 'react';
 
@@ -23,10 +22,8 @@ export function useRender(): ReactElement | null {
       return <Cart />;
     case 'offers':
       return <Offers />;
-    case 'delivery':
-      return <DeliveryInfo />;
-    case 'about':
-      return <About />;
+    case 'purchased':
+      return <Purchased />;
     case 'reviews':
       return <Reviews />;
     case 'adminPanel':

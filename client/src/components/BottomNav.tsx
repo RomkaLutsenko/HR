@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const sections: { id: UiSection; icon: string; label: string }[] = [
   { id: 'mainMenu', icon: '🏠', label: 'Главная' },
   { id: 'offers', icon: '🎯', label: 'Акции' },
-  { id: 'delivery', icon: '🚚', label: 'Доставка' },
-  { id: 'about', icon: 'ℹ️', label: 'О нас' },
+  { id: 'purchased', icon: 'ℹ️', label: 'Покупки' },
   { id: 'reviews', icon: '⭐', label: 'Отзывы' },
 ];
 
