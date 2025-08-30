@@ -4,7 +4,7 @@ export default function SpecialOffers() {
   const router = useRouter();
 
   const handleOffers = () => {
-    router.push('/offers');
+    router.push('/customer/offers');
   };
 
   const vibrate = () => {

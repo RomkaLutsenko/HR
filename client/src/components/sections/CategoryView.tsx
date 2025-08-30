@@ -22,7 +22,7 @@ export default function CategoryView() {
   const specialists = getSpecialistsByCategory(currentCategory);
 
   const handleShowMainMenu = () => {
-    router.push('/');
+    router.push('/customer');
   };
 
   const vibrate = () => {

@@ -18,8 +18,12 @@ export default function Home() {
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
 
   useEffect(() => {
-    if (status === 'ok' && user?.role === 'SPECIALIST') {
-      router.push('/specialist');
+    if (status === 'ok' && user?.role) {
+      if (user.role === 'SPECIALIST') {
+        router.push('/specialist');
+      } else {
+        router.push('/customer');
+      }
     }
   }, [status, user, router]);
 

@@ -11,7 +11,7 @@ export default function CartButton() {
   const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCart = () => {
-    router.push('/cart');
+    router.push('/customer/cart');
   };
 
   const vibrate = () => {

@@ -1,0 +1,86 @@
+'use client';
+
+import Header from '@/components/Header';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { status, user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'ok' && !user?.isAdmin) {
+      // Если пользователь не администратор, перенаправляем на главную
+      if (user?.role === 'SPECIALIST') {
+        router.push('/specialist');
+      } else {
+        router.push('/');
+      }
+    }
+  }, [status, user, router]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-secondary-600">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg font-medium">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-500 to-red-600 px-4">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Ошибка авторизации</h2>
+          <p className="text-red-100 mb-6">Не удалось загрузить данные. Попробуйте перезагрузить страницу.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="bg-white text-red-600 px-6 py-3 rounded-xl font-semibold hover:bg-red-50 transition-all duration-300 shadow-lg"
+          >
+            Перезагрузить
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Если пользователь не администратор, показываем загрузку (будет перенаправление)
+  if (status === 'ok' && !user?.isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-secondary-600">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg font-medium">Перенаправление...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-md mx-auto min-h-screen relative overflow-hidden bg-gradient-to-br from-primary-50 to-secondary-50">
+      {/* Фоновые декоративные элементы */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary-200 to-secondary-200 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-accent-200 to-primary-200 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-secondary-200 to-accent-200 rounded-full opacity-10 blur-3xl"></div>
+      </div>
+
+      {/* Основной контент */}
+      <div className="relative z-10">
+        <Header />
+        <div className="pb-24">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}

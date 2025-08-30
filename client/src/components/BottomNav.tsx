@@ -4,10 +4,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePathname, useRouter } from 'next/navigation';
 
 const customerSections: { id: string; icon: string; label: string; path: string }[] = [
-  { id: 'mainMenu', icon: '🏠', label: 'Главная', path: '/' },
-  { id: 'offers', icon: '🎯', label: 'Акции', path: '/offers' },
-  { id: 'purchased', icon: 'ℹ️', label: 'Покупки', path: '/purchased' },
-  { id: 'profile', icon: '👤', label: 'Профиль', path: '/profile' },
+  { id: 'mainMenu', icon: '🏠', label: 'Главная', path: '/customer' },
+  { id: 'offers', icon: '🎯', label: 'Акции', path: '/customer/offers' },
+  { id: 'purchased', icon: 'ℹ️', label: 'Покупки', path: '/customer/purchased' },
+  { id: 'profile', icon: '👤', label: 'Профиль', path: '/customer/profile' },
 ];
 
 const specialistSections: { id: string; icon: string; label: string; path: string }[] = [

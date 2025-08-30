@@ -1,3 +1,5 @@
+'use client';
+
 import { useAuth } from '@/hooks/useAuth';
 import { setCurrentCategory } from '@/store/slices/uiSlice';
 import { useRouter } from 'next/navigation';
@@ -14,7 +16,7 @@ export default function MainMenu() {
 
   const handleShowCategory = (category: string) => {
     dispatch(setCurrentCategory(category));
-    router.push('/category');
+    router.push('/customer/category');
   };
 
   const vibrate = () => {
@@ -42,11 +44,11 @@ export default function MainMenu() {
             <div
               key={service.id}
               className="glass rounded-2xl p-5 border border-white/20 hover:border-primary-300/30 hover:shadow-medium transition-all duration-300 cursor-pointer hover-lift group"
-              onClick={() => {
-                dispatch(setCurrentCategory(service.category));
-                router.push('/category');
-                vibrate();
-              }}
+                              onClick={() => {
+                  dispatch(setCurrentCategory(service.category));
+                  router.push('/customer/category');
+                  vibrate();
+                }}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-center space-x-4">
