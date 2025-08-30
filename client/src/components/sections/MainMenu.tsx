@@ -7,7 +7,7 @@ import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import SearchBar from '../SearchBar';
+import SearchBar from '../search/SearchBar';
 import SpecialOffers from '../SpecialOffers';
 
 export default function MainMenu() {

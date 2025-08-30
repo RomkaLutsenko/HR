@@ -11,7 +11,7 @@ interface SearchContainerProps {
   placeholder?: string;
 }
 
-const SearchContainer = memo(({ 
+const SearchBar = memo(({ 
   onSearchResults, 
   categoryId, 
   placeholder = "Поиск услуг..." 
@@ -57,6 +57,6 @@ const SearchContainer = memo(({
   );
 });
 
-SearchContainer.displayName = 'SearchContainer';
+SearchBar.displayName = 'SearchBar';
 
-export default SearchContainer;
+export default SearchBar;

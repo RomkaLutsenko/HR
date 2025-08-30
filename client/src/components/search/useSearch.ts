@@ -1,6 +1,6 @@
 import { Service } from '@/types/types';
 import { api } from '@/utils/api';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseSearchProps {
   onSearchResults?: (services: Service[]) => void;
@@ -10,24 +10,34 @@ interface UseSearchProps {
 export const useSearch = ({ onSearchResults, categoryId }: UseSearchProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
+  
+  // Используем ref для хранения актуальных значений
+  const onSearchResultsRef = useRef(onSearchResults);
+  const categoryIdRef = useRef(categoryId);
+  
+  // Обновляем ref при изменении пропсов
+  useEffect(() => {
+    onSearchResultsRef.current = onSearchResults;
+    categoryIdRef.current = categoryId;
+  }, [onSearchResults, categoryId]);
 
   const performSearch = useCallback(async (term: string) => {
     if (term.length < 2) {
-      onSearchResults?.([]);
+      onSearchResultsRef.current?.([]);
       return;
     }
 
     setIsSearching(true);
     try {
-      const services = await api.searchServices(term, categoryId);
-      onSearchResults?.(services);
+      const services = await api.searchServices(term, categoryIdRef.current);
+      onSearchResultsRef.current?.(services);
     } catch (error) {
       console.error('Search error:', error);
-      onSearchResults?.([]);
+      onSearchResultsRef.current?.([]);
     } finally {
       setIsSearching(false);
     }
-  }, [onSearchResults, categoryId]);
+  }, []);
 
   // Debounced search effect
   useEffect(() => {
@@ -36,7 +46,7 @@ export const useSearch = ({ onSearchResults, categoryId }: UseSearchProps) => {
     }, 700);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, performSearch]);
+  }, [searchTerm]);
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
