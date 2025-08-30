@@ -84,7 +84,7 @@ export default function BottomNav() {
       </div>
       
       {/* Индикатор безопасной зоны для iPhone */}
-      <div className="h-3 safe-area-bottom"></div>
+      <div className="safe-area-bottom"></div>
     </div>
   );
 }

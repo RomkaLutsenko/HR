@@ -59,7 +59,7 @@ export default function CustomerLayout({
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-10">
+      <div className="relative z-10 safe-area-top">
         <Header />
         <div className="pt-6 pb-24">
           {children}
