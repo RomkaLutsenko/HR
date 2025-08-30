@@ -32,18 +32,35 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
     }
   }, [onSearchResults, categoryId]);
 
-  // Debounced search
+  // Debounced search с увеличенной задержкой
   useEffect(() => {
+    if (searchTerm.length < 2) {
+      onSearchResults?.([]);
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
       performSearch(searchTerm);
-    }, 300);
+    }, 800); // Увеличили задержку до 800мс
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, performSearch]);
+  }, [searchTerm, performSearch, onSearchResults]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchTerm.trim().length >= 2) {
+      performSearch(searchTerm.trim());
+    }
+  };
+
+  const handleSearchClick = () => {
+    if (searchTerm.trim().length >= 2) {
+      performSearch(searchTerm.trim());
+    }
   };
 
   return (
@@ -56,9 +73,12 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
         <div className="relative glass rounded-2xl border border-white/20 shadow-soft hover:shadow-medium transition-all duration-300">
           <div className="flex items-center px-4 py-3">
             {/* Иконка поиска */}
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center mr-3 shadow-glow">
+            <button
+              onClick={handleSearchClick}
+              className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center mr-3 shadow-glow hover:shadow-medium transition-all duration-200 hover:scale-105"
+            >
               <span className="text-white text-lg">🔍</span>
-            </div>
+            </button>
             
             {/* Поле ввода */}
             <input
@@ -67,6 +87,7 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
               placeholder={placeholder}
               value={searchTerm}
               onChange={handleSearch}
+              onKeyPress={handleKeyPress}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             />
@@ -96,18 +117,20 @@ export default function SearchBar({ onSearchResults, categoryId, placeholder = "
         )}
       </div>
       
-      {/* Быстрые фильтры */}
-      {searchTerm.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2">
-          <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
-            Все услуги
-          </span>
-          <span className="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium">
-            По цене
-          </span>
-          <span className="px-3 py-1 bg-accent-100 text-accent-700 rounded-full text-xs font-medium">
-            По рейтингу
-          </span>
+      {/* Подсказка */}
+      {searchTerm.length > 0 && searchTerm.length < 2 && (
+        <div className="mt-3 text-center">
+          <p className="text-sm text-neutral-600">
+            Введите минимум 2 символа для поиска
+          </p>
+        </div>
+      )}
+      
+      {searchTerm.length >= 2 && isSearching && (
+        <div className="mt-3 text-center">
+          <p className="text-sm text-neutral-600">
+            Выполняется поиск...
+          </p>
         </div>
       )}
     </div>
