@@ -6,15 +6,22 @@ export async function POST(request: NextRequest) {
   try {
     // Получаем токен из заголовков
     const authHeader = request.headers.get('authorization');
+    console.log('Auth header:', authHeader ? 'exists' : 'missing');
+    
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('No Bearer token found');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const token = authHeader.substring(7);
+    console.log('Token length:', token.length);
     
     // Верифицируем JWT токен
     const payload = await verifyJWT(token);
+    console.log('Payload:', payload);
+    
     if (!payload) {
+      console.log('Invalid token payload');
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 

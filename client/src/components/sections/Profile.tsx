@@ -25,13 +25,33 @@ export default function Profile() {
       // Получаем токен из cookie
       const token = getCookie('accessToken');
       console.log('Token:', token ? 'exists' : 'not found');
+      console.log('Token value:', token);
+      console.log('All cookies:', document.cookie);
+      
+      // Декодируем токен для проверки содержимого (без верификации подписи)
+      if (token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          console.log('Decoded token payload:', JSON.parse(jsonPayload));
+        } catch (error) {
+          console.error('Error decoding token:', error);
+        }
+      }
 
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+      
+      console.log('Request headers:', headers);
+      
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        headers,
         body: JSON.stringify({ role: newRole }),
       });
 
