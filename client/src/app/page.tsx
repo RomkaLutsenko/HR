@@ -104,7 +104,7 @@ export default function Home() {
         {/* Основной контент */}
         <div className="relative z-10">
           <Header />
-          <div className="pb-24">
+          <div className="pt-6 pb-24">
             <MainMenu />
           </div>
           <BottomNav />

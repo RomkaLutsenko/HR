@@ -61,7 +61,7 @@ export default function CustomerLayout({
       {/* Основной контент */}
       <div className="relative z-10">
         <Header />
-        <div className="pb-24">
+        <div className="pt-6 pb-24">
           {children}
         </div>
         <BottomNav />

@@ -96,7 +96,7 @@ export default function Purchased() {
 
   if (loading) {
     return (
-      <div className="px-6 pb-24">
+      <div className="px-6 pt-6 pb-24">
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -105,7 +105,7 @@ export default function Purchased() {
   }
 
   return (
-    <div className="px-6 pb-24">
+    <div className="px-6 pt-6 pb-24">
       {/* Заголовок */}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-10 h-10 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center shadow-glow">

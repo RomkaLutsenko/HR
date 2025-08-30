@@ -189,7 +189,7 @@ export default function SpecialistDashboard() {
       </div>
 
       {/* Контент */}
-      <div className="p-4 pb-24">
+      <div className="p-4 pt-6 pb-24">
         {activeTab === 'profile' && (
           <div className="space-y-6">
             {/* Основная информация */}

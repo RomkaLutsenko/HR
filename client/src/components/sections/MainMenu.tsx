@@ -60,7 +60,7 @@ export default function MainMenu() {
   };
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-6 pt-6 pb-24">
       <SearchBar />
       <SpecialOffers />
       

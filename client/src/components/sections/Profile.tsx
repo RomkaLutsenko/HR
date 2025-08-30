@@ -63,7 +63,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="px-6 pb-24">
+    <div className="px-6 pt-6 pb-24">
       <div className="max-w-md mx-auto space-y-6">
         {/* Заголовок */}
         <div className="flex items-center space-x-3 mb-6">
