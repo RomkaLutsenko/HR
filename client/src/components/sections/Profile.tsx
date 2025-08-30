@@ -4,6 +4,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { UserRole } from '@/types/types';
 import { useState } from 'react';
 
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : undefined;
+}
+
 export default function Profile() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -15,10 +22,14 @@ export default function Profile() {
     try {
       const newRole = user.role === 'CUSTOMER' ? 'SPECIALIST' : 'CUSTOMER';
       
+      // Получаем токен из cookie
+      const token = getCookie('accessToken');
+
       const response = await fetch('/api/auth/update-role', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({ role: newRole }),
       });
