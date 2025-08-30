@@ -47,6 +47,33 @@ export default function Profile() {
     }
   };
 
+  const handleSwitchToModerator = async () => {
+    if (!user || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/auth/update-role', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role: 'MODERATOR' }),
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        // Обновляем страницу для применения изменений
+        window.location.reload();
+      } else {
+        console.error('Failed to update role');
+      }
+    } catch (error) {
+      console.error('Error updating role:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -171,39 +198,64 @@ export default function Profile() {
             <p className="text-neutral-600 text-sm">{getRoleDescription(user.role)}</p>
           </div>
 
-          {/* Кнопка переключения роли */}
-          {user.role !== 'MODERATOR' && (
-            <button
-              onClick={handleRoleToggle}
-              disabled={isLoading || !user.role}
-              className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
-                isLoading || !user.role
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
-              }`}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Переключение...
-                </div>
-              ) : !user.role ? (
-                'Сначала выберите роль'
-              ) : (
-                `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
-              )}
-            </button>
-          )}
-          
-          {/* Ссылка на панель модератора */}
-          {user.role === 'MODERATOR' && (
-            <button
-              onClick={() => window.location.href = '/moderator'}
-              className="color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-lg hover:scale-105 active:scale-95"
-            >
-              Перейти в панель модератора
-            </button>
-          )}
+          {/* Кнопки переключения роли */}
+          <div className="space-y-3">
+            {/* Кнопка переключения между Заказчиком и Исполнителем */}
+            {user.role !== 'MODERATOR' && (
+              <button
+                onClick={handleRoleToggle}
+                disabled={isLoading || !user.role}
+                className={`color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+                  isLoading || !user.role
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg hover:scale-105 active:scale-95'
+                }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Переключение...
+                  </div>
+                ) : !user.role ? (
+                  'Сначала выберите роль'
+                ) : (
+                  `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
+                )}
+              </button>
+            )}
+            
+            {/* Кнопка переключения на Модератора */}
+            {user.role !== 'MODERATOR' && (
+              <button
+                onClick={handleSwitchToModerator}
+                disabled={isLoading}
+                className={`w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 ${
+                  isLoading
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-lg hover:scale-105 active:scale-95 text-white'
+                }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Переключение...
+                  </div>
+                ) : (
+                  'Переключиться на Модератора'
+                )}
+              </button>
+            )}
+            
+            {/* Ссылка на панель модератора */}
+            {user.role === 'MODERATOR' && (
+              <button
+                onClick={() => window.location.href = '/moderator'}
+                className="color-black border-amber-50 w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-lg hover:scale-105 active:scale-95"
+              >
+                Перейти в панель модератора
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Дополнительная информация */}
