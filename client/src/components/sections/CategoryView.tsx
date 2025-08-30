@@ -126,11 +126,11 @@ export default function CategoryView() {
                           <span className="text-sm text-neutral-600">{specialist.reviewCount}</span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-1">
-                          <span className="text-neutral-400">⏱️</span>
-                          <span className="text-sm text-neutral-600">{specialist.experience}</span>
-                        </div>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-neutral-400">⏱️</span>
+                        <span className="text-sm text-neutral-600">{specialist.experience}</span>
+                      </div>
+                      <div>
                         <span className="text-primary-600 font-bold">{specialist.hourlyRate} ₽/час</span>
                       </div>
                     </div>
@@ -167,13 +167,6 @@ export default function CategoryView() {
                   <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{service.description}</p>
                   
                   <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-4">
-                      <span className="text-primary-600 font-bold text-lg">{service.price} ₽</span>
-                      <div className="flex items-center space-x-1">
-                        <span className="text-neutral-400">⏱️</span>
-                        <span className="text-sm text-neutral-600">{Math.floor(service.duration / 60)}ч</span>
-                      </div>
-                    </div>
                     <div className="flex flex-col items-center space-y-1">
                       <div className="flex items-center space-x-1">
                         <span className="text-yellow-500">⭐</span>
@@ -189,6 +182,13 @@ export default function CategoryView() {
                       >
                         📝 {service.reviewCount} отзывов
                       </button>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-neutral-400">⏱️</span>
+                      <span className="text-sm text-neutral-600">{Math.floor(service.duration / 60)}ч</span>
+                    </div>
+                    <div>
+                      <span className="text-primary-600 font-bold text-lg">{service.price} ₽</span>
                     </div>
                   </div>
 
