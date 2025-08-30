@@ -181,6 +181,16 @@ export default function Profile() {
 
           {/* Кнопки переключения роли */}
           <div className="space-y-3">
+            {/* Кнопка перехода в панель модератора */}
+            {user.isModerator && (
+              <button
+                onClick={() => window.location.href = '/moderator'}
+                className="w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-lg hover:scale-105 active:scale-95 text-white"
+              >
+                Перейти в панель модератора
+              </button>
+            )}
+            
             {/* Кнопка переключения между Заказчиком и Исполнителем */}
             <button
               onClick={handleRoleToggle}
@@ -202,16 +212,6 @@ export default function Profile() {
                 `Переключиться на ${user.role === 'CUSTOMER' ? 'Исполнителя' : 'Заказчика'}`
               )}
             </button>
-            
-            {/* Кнопка перехода в панель модератора */}
-            {user.isModerator && (
-              <button
-                onClick={() => window.location.href = '/moderator'}
-                className="w-full py-3 px-4 rounded-2xl font-medium transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-lg hover:scale-105 active:scale-95 text-white"
-              >
-                Перейти в панель модератора
-              </button>
-            )}
           </div>
         </div>
 

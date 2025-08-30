@@ -75,8 +75,6 @@ export function RoleSelection({ onRoleSelect, isLoading = false }: RoleSelection
               </div>
             </div>
           </button>
-
-
         </div>
 
         {/* Индикатор загрузки */}
