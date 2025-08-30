@@ -15,7 +15,7 @@ export default function CartButton() {
   // Отслеживаем скролл для показа/скрытия кнопки
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
-    const headerHeight = 80; // Примерная высота header
+    const headerHeight = 85; // Примерная высота header
     
     // Показываем кнопку, когда скролл больше высоты header (header ушел из поля видимости)
     const shouldBeVisible = scrollTop > headerHeight;
