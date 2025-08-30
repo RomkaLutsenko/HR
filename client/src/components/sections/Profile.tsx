@@ -63,12 +63,17 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+    <div className="px-6 pb-24">
       <div className="max-w-md mx-auto space-y-6">
         {/* Заголовок */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Профиль</h1>
-          <p className="text-gray-600">Управление вашим аккаунтом</p>
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-glow">
+            <span className="text-white text-lg">👤</span>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-neutral-800">Профиль</h2>
+            <p className="text-sm text-neutral-600">Управление вашим аккаунтом</p>
+          </div>
         </div>
 
         {/* Карточка пользователя */}
@@ -80,51 +85,51 @@ export default function Profile() {
                 {user.firstName?.[0] || user.username?.[0] || 'U'}
               </span>
             </div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-1">
+            <h2 className="text-xl font-semibold text-neutral-800 mb-1">
               {user.firstName && user.lastName 
                 ? `${user.firstName} ${user.lastName}`
                 : user.username || 'Пользователь'
               }
             </h2>
             {user.username && (
-              <p className="text-gray-500 text-sm">@{user.username}</p>
+              <p className="text-neutral-500 text-sm">@{user.username}</p>
             )}
           </div>
 
           {/* Информация о пользователе */}
           <div className="space-y-4">
             {/* ID пользователя */}
-            <div className="flex justify-between items-center py-2 border-b border-gray-100">
-              <span className="text-gray-600">ID пользователя:</span>
-              <span className="font-mono text-sm text-gray-800">{user.id}</span>
+            <div className="flex justify-between items-center py-2 border-b border-white/20">
+              <span className="text-neutral-600">ID пользователя:</span>
+              <span className="font-mono text-sm text-neutral-800">{user.id}</span>
             </div>
 
             {/* Telegram ID */}
-            <div className="flex justify-between items-center py-2 border-b border-gray-100">
-              <span className="text-gray-600">Telegram ID:</span>
-              <span className="font-mono text-sm text-gray-800">{user.telegramId}</span>
+            <div className="flex justify-between items-center py-2 border-b border-white/20">
+              <span className="text-neutral-600">Telegram ID:</span>
+              <span className="font-mono text-sm text-neutral-800">{user.telegramId}</span>
             </div>
 
             {/* Номер телефона */}
             {user.phoneNumber && (
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Телефон:</span>
-                <span className="text-gray-800">{user.phoneNumber}</span>
+              <div className="flex justify-between items-center py-2 border-b border-white/20">
+                <span className="text-neutral-600">Телефон:</span>
+                <span className="text-neutral-800">{user.phoneNumber}</span>
               </div>
             )}
 
             {/* Дата регистрации */}
-            <div className="flex justify-between items-center py-2 border-b border-gray-100">
-              <span className="text-gray-600">Дата регистрации:</span>
-              <span className="text-gray-800 text-sm">
+            <div className="flex justify-between items-center py-2 border-b border-white/20">
+              <span className="text-neutral-600">Дата регистрации:</span>
+              <span className="text-neutral-800 text-sm">
                 {new Date(user.createdAt).toLocaleDateString('ru-RU')}
               </span>
             </div>
 
             {/* Статус администратора */}
             {user.isAdmin && (
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Статус:</span>
+              <div className="flex justify-between items-center py-2 border-b border-white/20">
+                <span className="text-neutral-600">Статус:</span>
                 <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">
                   Администратор
                 </span>
@@ -136,20 +141,20 @@ export default function Profile() {
         {/* Карточка роли */}
         <div className="glass rounded-3xl p-6 border border-white/20 shadow-large">
           <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Ваша роль</h3>
+            <h3 className="text-lg font-semibold text-neutral-800 mb-2">Ваша роль</h3>
             <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-3 ${
               !user.role 
-                ? 'bg-gray-100 text-gray-800'
+                ? 'bg-neutral-100 text-neutral-800'
                 : user.role === 'CUSTOMER' 
-                ? 'bg-blue-100 text-blue-800' 
-                : 'bg-green-100 text-green-800'
+                ? 'bg-primary-100 text-primary-800' 
+                : 'bg-secondary-100 text-secondary-800'
             }`}>
               <span className="mr-2">
                 {!user.role ? '❓' : user.role === 'CUSTOMER' ? '👤' : '🛠️'}
               </span>
               {getRoleLabel(user.role)}
             </div>
-            <p className="text-gray-600 text-sm">{getRoleDescription(user.role)}</p>
+            <p className="text-neutral-600 text-sm">{getRoleDescription(user.role)}</p>
           </div>
 
           {/* Кнопка переключения роли */}
@@ -177,21 +182,21 @@ export default function Profile() {
 
         {/* Дополнительная информация */}
         <div className="glass rounded-3xl p-6 border border-white/20 shadow-large">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Статистика</h3>
+          <h3 className="text-lg font-semibold text-neutral-800 mb-4">Статистика</h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-primary-600">0</div>
-              <div className="text-sm text-gray-600">Заказов</div>
+              <div className="text-sm text-neutral-600">Заказов</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-secondary-600">0</div>
-              <div className="text-sm text-gray-600">Отзывов</div>
+              <div className="text-sm text-neutral-600">Отзывов</div>
             </div>
           </div>
         </div>
 
         {/* Информация о приложении */}
-        <div className="text-center text-gray-500 text-sm">
+        <div className="text-center text-neutral-500 text-sm">
           <p>Версия приложения: 1.0.0</p>
           <p className="mt-1">© 2024 HR Services</p>
         </div>
