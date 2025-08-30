@@ -22,11 +22,11 @@ export async function GET(request: NextRequest) {
     // Проверяем, что пользователь является модератором
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      select: { role: true }
+      select: { isModerator: true }
     });
 
-    if (!user || user.role !== 'MODERATOR') {
-      return NextResponse.json({ error: 'Access denied. Moderator role required.' }, { status: 403 });
+    if (!user || !user.isModerator) {
+      return NextResponse.json({ error: 'Access denied. Moderator access required.' }, { status: 403 });
     }
 
     // Получаем все заявки с группировкой по статусу
@@ -140,11 +140,11 @@ export async function POST(request: NextRequest) {
     // Проверяем, что пользователь является модератором
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      select: { role: true }
+      select: { isModerator: true }
     });
 
-    if (!user || user.role !== 'MODERATOR') {
-      return NextResponse.json({ error: 'Access denied. Moderator role required.' }, { status: 403 });
+    if (!user || !user.isModerator) {
+      return NextResponse.json({ error: 'Access denied. Moderator access required.' }, { status: 403 });
     }
 
     // Получаем данные из тела запроса
