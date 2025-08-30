@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 
 interface ModeratorLayoutProps {
@@ -9,16 +10,13 @@ interface ModeratorLayoutProps {
 
 export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
   const { user, status } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'loading') {
-      if (!user || user.role !== 'MODERATOR') {
-        console.log('User not authorized for moderator panel, redirecting...');
-        // Принудительно перенаправляем на главную страницу
-        window.location.replace('/');
-      }
+    if (status !== 'loading' && (!user || user.role !== 'MODERATOR')) {
+      router.push('/');
     }
-  }, [user, status]);
+  }, [user, status, router]);
 
   if (status === 'loading') {
     return (
@@ -32,16 +30,7 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
   }
 
   if (!user || user.role !== 'MODERATOR') {
-    // Если пользователь не авторизован или не модератор, показываем загрузку
-    // и useEffect перенаправит на главную страницу
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Перенаправление...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -57,9 +46,8 @@ export default function ModeratorLayout({ children }: ModeratorLayoutProps) {
                 {user.firstName} {user.lastName}
               </span>
               <button
-                onClick={() => window.location.href = '/'}
-                className="text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                title="Выйти из системы"
+                onClick={() => router.push('/')}
+                className="text-sm text-blue-600 hover:text-blue-800"
               >
                 Выйти
               </button>

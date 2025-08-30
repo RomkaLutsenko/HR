@@ -5,38 +5,36 @@ import { useCallback, useEffect, useState } from 'react';
 
 type AuthStatus = 'loading' | 'ok' | 'need_phone' | 'error';
 
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
 
-
-// Функция clearCookie больше не нужна, так как cookies httpOnly
-// и могут быть очищены только сервером
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : undefined;
+}
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  const token = getCookie('accessToken');
+
   const headers = {
     ...options.headers,
     'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  let res = await fetch(url, { 
-    ...options, 
-    headers,
-    credentials: 'include', // Важно для работы с cookies
-  });
+  let res = await fetch(url, { ...options, headers });
 
   if (res.status === 401) {
     // Попытка обновить токен
     const refreshRes = await fetch('/api/auth/refresh', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
     });
 
     if (refreshRes.ok) {
-      // Повторный запрос после обновления токена
-      res = await fetch(url, { 
-        ...options, 
-        headers,
-        credentials: 'include',
-      });
+      // Повторный запрос с новым токеном
+      const newAccessToken = getCookie('accessToken');
+      headers.Authorization = `Bearer ${newAccessToken}`;
+      res = await fetch(url, { ...options, headers });
     } else {
       // Если обновление не удалось, считаем пользователя неавторизованным
       window.location.href = '/'; // или на страницу логина
@@ -50,7 +48,6 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 export function useAuth() {
   const [status, setStatus] = useState<AuthStatus>('loading');
   const [user, setUser] = useState<User | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -84,7 +81,6 @@ export function useAuth() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ initData }),
-        credentials: 'include',
       })
       .then(res => res.json())
       .then(data => {
@@ -106,53 +102,13 @@ export function useAuth() {
 
 
   useEffect(() => {
-    // Поскольку cookies httpOnly, мы не можем их читать на клиенте
-    // Поэтому всегда пытаемся получить пользователя через API
-    fetchUser();
-  }, [fetchUser]);
-
-  const logout = useCallback(async () => {
-    if (isLoggingOut) return; // Предотвращаем множественные клики
-    
-    console.log('Starting logout process...');
-    setIsLoggingOut(true);
-    
-    try {
-      console.log('Sending logout request...');
-      const res = await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Важно для работы с cookies
-      });
-
-      console.log('Logout response status:', res.status);
-      
-      if (res.ok) {
-        console.log('Logout successful, cookies cleared by server...');
-        
-        console.log('Updating state...');
-        // Очищаем состояние
-        setUser(null);
-        setStatus('error');
-        
-        console.log('Redirecting to home page...');
-        // Принудительно перенаправляем на главную страницу и обновляем страницу
-        window.location.replace('/');
-      } else {
-        console.error('Logout failed with status:', res.status);
-        const errorData = await res.text();
-        console.error('Logout error response:', errorData);
-        setIsLoggingOut(false);
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Даже если запрос не удался, очищаем состояние
-      setUser(null);
-      setStatus('error');
-      // Принудительно перенаправляем на главную страницу
-      window.location.replace('/');
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      fetchUser();
+    } else {
+      validateWithTelegram();
     }
-  }, [isLoggingOut]);
+  }, [fetchUser, validateWithTelegram]);
 
-  return { status, user, logout, isLoggingOut };
+  return { status, user };
 }
