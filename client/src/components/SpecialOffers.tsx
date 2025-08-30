@@ -73,9 +73,9 @@ export default function SpecialOffers() {
         </div>
         
         {/* Анимированные частицы */}
-        <div className="absolute top-4 right-4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse"></div>
+        {/* <div className="absolute top-4 right-4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse"></div>
         <div className="absolute bottom-6 right-8 w-1 h-1 bg-yellow-300 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-        <div className="absolute top-8 left-6 w-1 h-1 bg-yellow-300 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-8 left-6 w-1 h-1 bg-yellow-300 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div> */}
       </div>
     </div>
   );
