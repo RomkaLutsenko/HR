@@ -100,7 +100,7 @@ export default function CategoryView() {
               >
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow-purple">
-                    <span className="text-white text-xl">{specialist.avatar}</span>
+                    <span className="text-white text-lg font-semibold">{specialist.name.charAt(0)}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
@@ -160,10 +160,10 @@ export default function CategoryView() {
               className="glass rounded-2xl p-5 border border-white/20 hover:border-primary-300/30 transition-all duration-300 hover-lift"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow">
-                  <span className="text-white text-xl">{service.image}</span>
-                </div>
+                              <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-glow">
+                    <span className="text-white text-lg font-semibold">{service.name.charAt(0)}</span>
+                  </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-lg font-semibold text-neutral-800 mb-2">{service.name}</h4>
                   <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{service.description}</p>
@@ -191,16 +191,16 @@ export default function CategoryView() {
                   </div>
 
                   {selectedSpecialist && specialist && (
-                    <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-3 mb-4 border border-primary-100">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                          <span className="text-white text-xs">{specialist.avatar}</span>
+                                          <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-3 mb-4 border border-primary-100">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-xs font-semibold">{specialist.name.charAt(0)}</span>
+                          </div>
+                          <span className="text-sm font-semibold text-primary-800">
+                            {specialist.name} • {specialist.hourlyRate} ₽/час
+                          </span>
                         </div>
-                        <span className="text-sm font-semibold text-primary-800">
-                          {specialist.name} • {specialist.hourlyRate} ₽/час
-                        </span>
                       </div>
-                    </div>
                   )}
 
                   {quantity === 0 ? (
